@@ -178,6 +178,108 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/01/anaconda/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="施少峰">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="施少峰的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/01/anaconda/" class="post-title-link" itemprop="url">Anaconda3安装及相关问题</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-01-01 00:00:00 / Modified: 22:09:35" itemprop="dateCreated datePublished" datetime="2020-01-01T00:00:00+08:00">2020-01-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h3><p><a href="https://repo.continuum.io/archive/" target="_blank" rel="noopener">https://repo.continuum.io/archive/</a></p>
+<p>ubuntu18.04LTS的python默认version是python3.6.8，Anaconda3-5.2.0-Lniux-x86_64.sh就是其对应的anaconda对应的版本</p>
+<h3 id="2-安装"><a href="#2-安装" class="headerlink" title="2.安装"></a>2.安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bash Anaconda3-5.2.0-Linux-x86_64.sh</span><br></pre></td></tr></table></figure>
+
+<p>改变安装目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Anaconda3 will now be installed into this location:</span><br><span class="line">/home/fengshang/anaconda3</span><br></pre></td></tr></table></figure>
+
+<p>选择是否将anaconda加入环境变量中（这里的局部环境变量，即当前用户，如果要加入全集变量这里选择no ）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Do you wish the installer to prepend the Anaconda3 install location</span><br><span class="line">to PATH <span class="keyword">in</span> your /home/fengshang/.bashrc ? [yes|no]</span><br><span class="line">[no] &gt;&gt;&gt; yes</span><br></pre></td></tr></table></figure>
+
+<p>安装完毕后，无论是将环境边界配置在bashrc中还是全局变量/etc/prifile中，都需要对其进行souce操作。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">source</span> /home/fengshang/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-使用"><a href="#3-使用" class="headerlink" title="3.使用"></a>3.使用</h3><p>环境相关</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ conda create -n 新建虚拟环境的名字 python=对应的版本号</span><br><span class="line">$ <span class="built_in">source</span> activate 虚拟环境的名字</span><br><span class="line">$ <span class="built_in">source</span> deactivate 虚拟环境的名字</span><br><span class="line">$ conda create --name [虚拟环境名] -- <span class="built_in">clone</span> [colne的环境]</span><br><span class="line">$ conda remove --name [虚拟环境名] -all //删除learn环境及下属所有包</span><br><span class="line"></span><br><span class="line">$ conda env list //列出conda管理的所有环境</span><br><span class="line">$ conda env <span class="built_in">export</span> &gt; environment.yaml //将包信息存入yaml文件中</span><br><span class="line">$ conda env create -f environment.yaml //当需要重新创建一个相同的虚拟环境时可以用</span><br></pre></td></tr></table></figure>
+
+<p>包相关</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ conda install 包的名字</span><br><span class="line">$ conda remove 包的名字  </span><br><span class="line">$ conda update 包的名字  </span><br><span class="line">$ conda list //列出当前环境的所有包</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-Jupyter"><a href="#4-Jupyter" class="headerlink" title="4.Jupyter"></a>4.Jupyter</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ conda install jupyter</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ jupyter notebook --generate-config</span><br><span class="line">Writing default config to: /home/fengshang/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
+
+<p>修改配置文件<strong>jupyter_notebook_config.py</strong>，修改启动时打开的路径</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c.NotebookApp.notebook_dir = <span class="string">'路径'</span></span><br></pre></td></tr></table></figure>
+
+<p>Jupyter启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ juypter notebook    <span class="comment"># 默认端口启动，8888</span></span><br><span class="line">$ jupyter notebook --port &lt;port number&gt;   <span class="comment"># 指定端口启动</span></span><br><span class="line">$ jupyter notebook --no-browser   <span class="comment"># 启动服务器但不在浏览器中打开</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-相关问题"><a href="#5-相关问题" class="headerlink" title="5.相关问题"></a>5.相关问题</h3><p>Q：执行<strong>conda create -n 环境的名字 python=版本号</strong>时，出现CondaHTTPError: HTTP 000 CONNECTION FAILED for url <a href="https://repo.anaconda.com/pkgs/r/linux-64/repodata.json.bz2" target="_blank" rel="noopener">https://repo.anaconda.com/pkgs/r/linux-64/repodata.json.bz2</a></p>
+<p>A：更新conda……直接翻墙解决或者更换源</p>
+<p>更新了好久才发现虚拟机没有共享到主机的网络，没翻墙，难怪下包下得那么慢……</p>
+<p>so研究了一下虚拟机如何共享主机网络</p>
+<h4 id="1-开启网络共享"><a href="#1-开启网络共享" class="headerlink" title="1.开启网络共享"></a>1.开启网络共享</h4><p><strong>控制面板\所有控制面板项\网络连接</strong>里将WLAN的共享打开</p>
+<h4 id="2-主机打开cmd获取ip"><a href="#2-主机打开cmd获取ip" class="headerlink" title="2.主机打开cmd获取ip"></a>2.主机打开cmd获取ip</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipconfig</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-shadowsocks"><a href="#3-shadowsocks" class="headerlink" title="3.shadowsocks"></a>3.shadowsocks</h4><p>主机的ss设置成允许其他设备接入</p>
+<h4 id="4-虚拟机"><a href="#4-虚拟机" class="headerlink" title="4.虚拟机"></a>4.虚拟机</h4><p>网络设置里将主机的IP复制过来，端口为1080，浏览器设置成使用本地代理</p>
+<p>下载速度飞起……</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[1]<a href="https://blog.csdn.net/Lucky_yw/article/details/89387073" target="_blank" rel="noopener">https://blog.csdn.net/Lucky_yw/article/details/89387073</a></p>
+<p>[2]<a href="https://blog.csdn.net/weixin_41366941/article/details/90549191" target="_blank" rel="noopener">https://blog.csdn.net/weixin_41366941/article/details/90549191</a></p>
+<p>[3]<a href="https://mp.weixin.qq.com/s?src=11&amp;timestamp=1577873187&amp;ver=2070&amp;signature=QQPW*kOKH-zI9m1PSo*6x*ZzikP7730A*B*iTAcexL4oJeOrvcSOiXr*vNtz8kgbCHxcz646uxMTN9OKuX6oOOFR3saFfIReFlLSHbTNK4m6sDhA9LcP3rOTE0qZzQt5&amp;new=1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?src=11&amp;timestamp=1577873187&amp;ver=2070&amp;signature=QQPW*kOKH-zI9m1PSo*6x*ZzikP7730A*B*iTAcexL4oJeOrvcSOiXr*vNtz8kgbCHxcz646uxMTN9OKuX6oOOFR3saFfIReFlLSHbTNK4m6sDhA9LcP3rOTE0qZzQt5&amp;new=1</a></p>
+<p>[4]<a href="http://scarhett.com/index.php/2018/04/18/01/" target="_blank" rel="noopener">http://scarhett.com/index.php/2018/04/18/01/</a></p>
+<p>[5]<a href="https://www.jianshu.com/p/918e517b142f?from=timeline" target="_blank" rel="noopener">https://www.jianshu.com/p/918e517b142f?from=timeline</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/31/altium_designer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -413,7 +515,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-12-31 19:55:31" itemprop="dateModified" datetime="2019-12-31T19:55:31+08:00">2019-12-31</time>
+                <time title="Modified: 2019-12-31 20:15:32" itemprop="dateModified" datetime="2019-12-31T20:15:32+08:00">2019-12-31</time>
               </span>
 
           
@@ -428,7 +530,7 @@
 
       
           <h3 id="1-安装mdk"><a href="#1-安装mdk" class="headerlink" title="1.安装mdk"></a>1.安装mdk</h3><h4 id="1-1安装对应芯片的pack"><a href="#1-1安装对应芯片的pack" class="headerlink" title="1.1安装对应芯片的pack"></a>1.1安装对应芯片的pack</h4><p><a href="http://www.keil.com/dd2/pack/" target="_blank" rel="noopener">http://www.keil.com/dd2/Pack/</a></p>
-<h3 id="2-安装32cube"><a href="#2-安装32cube" class="headerlink" title="2.安装32cube"></a>2.安装32cube</h3><h4 id="2-1安装JRE"><a href="#2-1安装JRE" class="headerlink" title="2.1安装JRE"></a>2.1安装JRE</h4><h4 id="2-2安装cube"><a href="#2-2安装cube" class="headerlink" title="2.2安装cube"></a>2.2安装cube</h4><h4 id="2-3安装库"><a href="#2-3安装库" class="headerlink" title="2.3安装库"></a>2.3安装库</h4><p>Tips:</p>
+<h3 id="2-安装32cube"><a href="#2-安装32cube" class="headerlink" title="2.安装32cube"></a>2.安装32cube</h3><h4 id="2-1安装JRE"><a href="#2-1安装JRE" class="headerlink" title="2.1安装JRE"></a>2.1安装JRE</h4><h4 id="2-2安装cube"><a href="#2-2安装cube" class="headerlink" title="2.2安装cube"></a>2.2安装cube</h4><h4 id="2-3安装库"><a href="#2-3安装库" class="headerlink" title="2.3安装库"></a>2.3安装库</h4><h3 id="3-安装X-CUBE-MCSDK"><a href="#3-安装X-CUBE-MCSDK" class="headerlink" title="3.安装X-CUBE-MCSDK"></a>3.安装X-CUBE-MCSDK</h3><p>Tips:</p>
 <p>1.安装cube和库完毕，新建工程时会下载mcusfeaturesAndDescription.json失败，cancel不影响，一些联网数据无法获取罢了<br>2.MDK要破解一下</p>
 
       
@@ -661,14 +763,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -701,7 +803,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019-12-31</span>
+  <span itemprop="copyrightYear">2020-01-01</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
