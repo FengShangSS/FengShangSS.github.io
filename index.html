@@ -446,7 +446,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-12-31 19:53:58" itemprop="dateModified" datetime="2019-12-31T19:53:58+08:00">2019-12-31</time>
+                <time title="Modified: 2020-01-02 12:58:57" itemprop="dateModified" datetime="2020-01-02T12:58:57+08:00">2020-01-02</time>
               </span>
 
           
@@ -464,7 +464,22 @@
 <p>E.g. </p>
 <p>​    Regression - predict continuous valued output(price)</p>
 <p>​     Classification - Discrete valued output(0 or 1)</p>
-<h4 id="1-Linear-regression-with-one-variable"><a href="#1-Linear-regression-with-one-variable" class="headerlink" title="1. Linear regression with one variable"></a>1. Linear regression with one variable</h4><h4 id="squared-error-function"><a href="#squared-error-function" class="headerlink" title="squared error function"></a>squared error function</h4><h3 id="Unsupervised-learning"><a href="#Unsupervised-learning" class="headerlink" title="Unsupervised learning"></a>Unsupervised learning</h3><h3 id="Program-environment"><a href="#Program-environment" class="headerlink" title="Program environment"></a>Program environment</h3><p>Octave or matlab</p>
+<h4 id="1-Linear-regression"><a href="#1-Linear-regression" class="headerlink" title="1. Linear regression"></a>1. Linear regression</h4><p>cost function：</p>
+<script type="math/tex; mode=display">
+J(\theta)=\frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x_i)-y_i)^2</script><h5 id="1-Gradient-Descent梯度下降法："><a href="#1-Gradient-Descent梯度下降法：" class="headerlink" title="(1)Gradient Descent梯度下降法："></a>(1)Gradient Descent梯度下降法：</h5><p>公式：</p>
+<p>repeat until convergence:{</p>
+<script type="math/tex; mode=display">
+\theta_j:=\theta_j-\alpha\frac{1}{m}\sum_{i=1}^{m}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}  \quad \quad\quad for \quad j:=0...n</script><p>}</p>
+<p>多元运用梯度下降法时，要把不同的特征值分别归一化，同数量级</p>
+<p>可以适当合并特征：长宽相乘得面积等</p>
+<p>α取值0.001，0.01，0.1，1试值，观察min{J(θ)}是否递减、递减的速度来判断α是否合适</p>
+<p>Polynomial regression：一个特征值平方，立方，开方等运算，形成新的特征值</p>
+<h5 id="2-Normal-Equation正规方程法"><a href="#2-Normal-Equation正规方程法" class="headerlink" title="(2)Normal  Equation正规方程法"></a>(2)Normal  Equation正规方程法</h5><script type="math/tex; mode=display">
+θ=(X^{T}X)^{-1} X^{T}y</script><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pinv(X&#39;*X)*X&#39;*y</span><br></pre></td></tr></table></figure>
+<p>不需要归一化</p>
+<p>矩阵如果不可逆，删除相似特征</p>
+<h5 id="3-Summary"><a href="#3-Summary" class="headerlink" title="(3)Summary"></a>(3)Summary</h5><p>n小，选择normal equation；n大，选择gradient descent。Andrew Ng的临界数值是10000。</p>
+<h3 id="Unsupervised-learning"><a href="#Unsupervised-learning" class="headerlink" title="Unsupervised learning"></a>Unsupervised learning</h3><h3 id="Program-environment"><a href="#Program-environment" class="headerlink" title="Program environment"></a>Program environment</h3><p>Octave or matlab</p>
 
       
     </div>
@@ -803,7 +818,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020-01-01</span>
+  <span itemprop="copyrightYear">2020-01-02</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
@@ -878,6 +893,56 @@
 
 
   
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
