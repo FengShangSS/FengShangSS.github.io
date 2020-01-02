@@ -446,7 +446,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-02 12:58:57" itemprop="dateModified" datetime="2020-01-02T12:58:57+08:00">2020-01-02</time>
+                <time title="Modified: 2020-01-02 16:13:56" itemprop="dateModified" datetime="2020-01-02T16:13:56+08:00">2020-01-02</time>
               </span>
 
           
@@ -464,10 +464,8 @@
 <p>E.g. </p>
 <p>​    Regression - predict continuous valued output(price)</p>
 <p>​     Classification - Discrete valued output(0 or 1)</p>
-<h4 id="1-Linear-regression"><a href="#1-Linear-regression" class="headerlink" title="1. Linear regression"></a>1. Linear regression</h4><p>cost function：</p>
-<script type="math/tex; mode=display">
-J(\theta)=\frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x_i)-y_i)^2</script><h5 id="1-Gradient-Descent梯度下降法："><a href="#1-Gradient-Descent梯度下降法：" class="headerlink" title="(1)Gradient Descent梯度下降法："></a>(1)Gradient Descent梯度下降法：</h5><p>公式：</p>
-<p>repeat until convergence:{</p>
+<h4 id="1-Linear-regression"><a href="#1-Linear-regression" class="headerlink" title="1. Linear regression"></a>1. Linear regression</h4><script type="math/tex; mode=display">
+J(\theta)=\frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x_i)-y_i)^2</script><h5 id="1-Gradient-Descent梯度下降法："><a href="#1-Gradient-Descent梯度下降法：" class="headerlink" title="(1)Gradient Descent梯度下降法："></a>(1)Gradient Descent梯度下降法：</h5><p>repeat until convergence:{</p>
 <script type="math/tex; mode=display">
 \theta_j:=\theta_j-\alpha\frac{1}{m}\sum_{i=1}^{m}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}  \quad \quad\quad for \quad j:=0...n</script><p>}</p>
 <p>多元运用梯度下降法时，要把不同的特征值分别归一化，同数量级</p>
@@ -479,7 +477,17 @@ J(\theta)=\frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x_i)-y_i)^2</script><h5 id="1-Grad
 <p>不需要归一化</p>
 <p>矩阵如果不可逆，删除相似特征</p>
 <h5 id="3-Summary"><a href="#3-Summary" class="headerlink" title="(3)Summary"></a>(3)Summary</h5><p>n小，选择normal equation；n大，选择gradient descent。Andrew Ng的临界数值是10000。</p>
-<h3 id="Unsupervised-learning"><a href="#Unsupervised-learning" class="headerlink" title="Unsupervised learning"></a>Unsupervised learning</h3><h3 id="Program-environment"><a href="#Program-environment" class="headerlink" title="Program environment"></a>Program environment</h3><p>Octave or matlab</p>
+<h4 id="2-Logistic-Regression-for-classification"><a href="#2-Logistic-Regression-for-classification" class="headerlink" title="2.Logistic Regression(for classification)"></a>2.Logistic Regression(for classification)</h4><script type="math/tex; mode=display">
+h_\theta(x)=\frac{1}{1+e^{-\theta^Tx}}\quad \quad \quad 0<h_\theta(x)<1</script><script type="math/tex; mode=display">
+找\theta^Tx的包围区域函数，使整体分割为0和1两部分</script><script type="math/tex; mode=display">
+Cost(h_\theta(x),y)=-ylog(h_\theta(x))-(1-y)log(1-h_\theta(x))</script><script type="math/tex; mode=display">
+J(\theta)=\frac{1}{m}\sum_{i=1}^{m}Cost(h_\theta(x^{(i)}),y^{(i)})</script><h5 id="1-Gradient-Descent梯度下降法：-1"><a href="#1-Gradient-Descent梯度下降法：-1" class="headerlink" title="(1)Gradient Descent梯度下降法："></a>(1)Gradient Descent梯度下降法：</h5><p>repeat {</p>
+<script type="math/tex; mode=display">
+\theta_j:=\theta_j-\alpha\frac{\partial}{\partial\theta_j}J(\theta)
+=\theta_j-\alpha\sum_{i=1}^{m}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}</script><p>}</p>
+<h5 id="2-Conjugate-gradient、BFGS、L-BFGS"><a href="#2-Conjugate-gradient、BFGS、L-BFGS" class="headerlink" title="(2)Conjugate gradient、BFGS、L-BFGS"></a>(2)Conjugate gradient、BFGS、L-BFGS</h5><h5 id="3-MultiClass-Classification"><a href="#3-MultiClass-Classification" class="headerlink" title="(3)MultiClass Classification"></a>(3)MultiClass Classification</h5><p>当分类结果不只两个时，分割，多条曲线寻找</p>
+<script type="math/tex; mode=display">
+max\quad{h_\theta^{(i)}(x)}</script><h3 id="Unsupervised-learning"><a href="#Unsupervised-learning" class="headerlink" title="Unsupervised learning"></a>Unsupervised learning</h3><h3 id="Program-environment"><a href="#Program-environment" class="headerlink" title="Program environment"></a>Program environment</h3><p>Octave or matlab</p>
 
       
     </div>
