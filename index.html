@@ -201,10 +201,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-01-02 00:00:00 / Modified: 18:03:36" itemprop="dateCreated datePublished" datetime="2020-01-02T00:00:00+08:00">2020-01-02</time>
+              <time title="Created: 2020-01-02 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-02T00:00:00+08:00">2020-01-02</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-05 12:01:51" itemprop="dateModified" datetime="2020-01-05T12:01:51+08:00">2020-01-05</time>
+              </span>
 
           
 
@@ -217,7 +223,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">GetPlayer().Transform:SetPosition(坐标，例：<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">ConsoleWorldPosition():Get()</span><br><span class="line"></span><br><span class="line">GetPlayer().components.health:SetInvincible(<span class="literal">true</span>)——上帝模式 </span><br><span class="line"></span><br><span class="line">GetPlayer().components.builder:GiveAllRecipes()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Speed?is?now?"</span>,?TheSim:GetTimeScale())</span><br><span class="line"></span><br><span class="line">c_searchprefabs(<span class="string">"log"</span>)</span><br><span class="line"></span><br><span class="line">AllPlayers[].components.hunger:SetPercent(<span class="number">0.5</span>)</span><br><span class="line">AllPlayers[<span class="number">1</span>].components.health:SetInvincible(<span class="literal">true</span>)——上帝模式 </span><br><span class="line"></span><br><span class="line">c_give(<span class="string">"代码名称“，数量)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">c_spwan("</span><span class="string">", )</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">c_godmode()</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">c_supergodmode()</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">c_listallplayers() ---列出所有玩家的用户名和玩家号码</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Get a certain player</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">AllPlayers[number]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">c_move(AllPlayers[number]) ---移动一个玩家，将玩家移动到光标位置</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">AllPlayers[number]:PushEvent('death') ---杀死一个玩家，杀死玩家</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">AllPlayers[number]:PushEvent('respawnfromghost') ---复活的玩家</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">c_goto(AllPlayers[number]) ---传送到指定玩家身边</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">TheInput:GetWorldEntityUnderMouse():Remove() ---删除鼠标指向物品</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">c_select() c_sel():Remove()---按下回车键后，它会删除鼠标下的项。在专用服务器上使用二次命令，第一命令将不工作</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">c_tile()</span></span><br></pre></td></tr></table></figure>
+          <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">GetPlayer().components.builder:GiveAllRecipes()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Speed?is?now?"</span>,?TheSim:GetTimeScale())</span><br><span class="line"> </span><br><span class="line"><span class="comment">--server    </span></span><br><span class="line">c_save() <span class="comment">--立即保存当前世界</span></span><br><span class="line">c_reset(<span class="literal">true</span>|<span class="literal">false</span>)<span class="comment">--true删除当前世界并新建一个全新的世界；false重新加载当前世界。</span></span><br><span class="line">c_shutdown(<span class="literal">true</span>|<span class="literal">false</span>)<span class="comment">--true保存并关闭当前世界；false不保存直接关闭当前世界</span></span><br><span class="line">c_rollback()<span class="comment">--回档</span></span><br><span class="line">c_regenerateworld()<span class="comment">--重新生成世界</span></span><br><span class="line">c_announce(<span class="string">"大家记好房间名，回一下档"</span>)</span><br><span class="line">c_connect(<span class="string">"ip"</span>, port, <span class="string">"password"</span>)<span class="comment">--游戏中直连</span></span><br><span class="line"></span><br><span class="line">AllPlayers[number]</span><br><span class="line">c_listplayers()    </span><br><span class="line">c_listallplayers() <span class="comment">--列出所有玩家的用户名和玩家号码</span></span><br><span class="line">c_despawn(AllPlayers[number])<span class="comment">--重新选人</span></span><br><span class="line">c_gatherplayers() </span><br><span class="line">c_goto(AllPlayers[number]) <span class="comment">--传送到指定玩家身边</span></span><br><span class="line">c_move(AllPlayers[number]) <span class="comment">--移动一个玩家，将玩家移动到光标位置</span></span><br><span class="line">    </span><br><span class="line">AllPlayers[number]:PushEvent(<span class="string">'death'</span>) <span class="comment">--杀死一个玩家，杀死玩家</span></span><br><span class="line">AllPlayers[number]:PushEvent(<span class="string">'respawnfromghost'</span>) <span class="comment">--复活的玩家</span></span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(AllPlayers) <span class="keyword">do</span> v:PushEvent(<span class="string">'respawnfromghost'</span>) <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--AllPlayers[number]</span></span><br><span class="line">GetPlayer().components.health:SetMaxHealth(<span class="number">300</span>)  <span class="comment">--最大生命</span></span><br><span class="line">GetPlayer().components.health:StartRegen(<span class="number">30</span>,<span class="number">10</span>) <span class="comment">--自动回血 StopRegen()</span></span><br><span class="line">GetPlayer().components.health.fire_damage_scale=<span class="number">0</span> <span class="comment">--火伤倍率</span></span><br><span class="line">GetPlayer().components.health:SetInvincible(<span class="literal">true</span>) <span class="comment">--health不减</span></span><br><span class="line">GetPlayer().components.hunger:SetPercent(<span class="number">0.5</span>) <span class="comment">--百分比设置 Pause()Resume()</span></span><br><span class="line">GetPlayer().components.hunger:SetMax(<span class="number">500</span>) <span class="comment">--最大饥饿</span></span><br><span class="line">GetPlayer().components.sanity:SetMax(<span class="number">500</span>) <span class="comment">--最大脑子</span></span><br><span class="line">c_maintainhealth(player, percent)<span class="comment">--锁血 hunger sanity temperature moisture。 percent缺省时为1</span></span><br><span class="line">c_maintainall(player)</span><br><span class="line">c_cancelmaintaintasks(player)<span class="comment">--解锁</span></span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(AllPlayers) <span class="keyword">do</span> v.components.health:SetInvincible(<span class="literal">true</span>) <span class="keyword">end</span> <span class="comment">---所有玩家无敌</span></span><br><span class="line">SpeedMultiplier</span><br><span class="line">GetPlayer().components.locomotor.runspeed = <span class="number">10</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">--个人的</span></span><br><span class="line">c_gonext(“”)<span class="comment">--pigking/cave_entrance/chester_eyebone/ghost</span></span><br><span class="line">c_give(<span class="string">"代码名称“，数量)</span></span><br><span class="line"><span class="string">c_speedmult(1.5)</span></span><br><span class="line"><span class="string">c_spwan("</span><span class="string">", )</span></span><br><span class="line"><span class="string">c_godmode()</span></span><br><span class="line"><span class="string">c_supergodmode()  </span></span><br><span class="line"><span class="string">c_sethealth(n)</span></span><br><span class="line"><span class="string">c_setsanity(n)</span></span><br><span class="line"><span class="string">c_sethunger(n)</span></span><br><span class="line"><span class="string">c_setmoisture(n)--湿度</span></span><br><span class="line"><span class="string">c_settemperature(n)--温度</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">--</span></span><br><span class="line"><span class="string">c_combatgear() --作战齿轮？</span></span><br><span class="line"><span class="string">c_combatsimulator(prefab,count)--作战模拟器？</span></span><br><span class="line"><span class="string">c_dump()</span></span><br><span class="line"><span class="string">c_dumpseasons()</span></span><br><span class="line"><span class="string">c_dumpworldstate()</span></span><br><span class="line"><span class="string">c_makeinvisible()</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">--</span></span><br><span class="line"><span class="string">c_summondeerclops()</span></span><br><span class="line"><span class="string">c_summonbearger() -- moose dragonfly</span></span><br><span class="line"><span class="string">DebugSpawn"</span>deerclops<span class="string">"</span></span><br><span class="line"><span class="string">c_skip(n)</span></span><br><span class="line"><span class="string">c_togglevotekick()--投票踢人</span></span><br><span class="line"><span class="string">c_groundtype()</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">--生成虫洞</span></span><br><span class="line"><span class="string">--没有只用一行的命令，请逐步输入</span></span><br><span class="line"><span class="string">--用这个命令生成虫洞1： worm1 = c_spawn("</span>wormhole<span class="string">")</span></span><br><span class="line"><span class="string">--用这个命令生成虫洞2： worm2 = c_spawn("</span>wormhole<span class="string">")</span></span><br><span class="line"><span class="string">--创建虫洞1到虫洞2之间的连接： worm1.components.teleporter.targetTeleporter = worm2</span></span><br><span class="line"><span class="string">--还有回来的连接： worm2.components.teleporter.targetTeleporter = worm1</span></span><br><span class="line"><span class="string">--完成！</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://wenku.baidu.com/view/ccd56cfacfc789eb162dc8a3.html?pn=50" target="_blank" rel="noopener">https://wenku.baidu.com/view/ccd56cfacfc789eb162dc8a3.html?pn=50</a></p>
 
       
     </div>
@@ -260,10 +267,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-01-01 00:00:00 / Modified: 22:09:35" itemprop="dateCreated datePublished" datetime="2020-01-01T00:00:00+08:00">2020-01-01</time>
+              <time title="Created: 2020-01-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-01T00:00:00+08:00">2020-01-01</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-05 09:17:12" itemprop="dateModified" datetime="2020-01-05T09:17:12+08:00">2020-01-05</time>
+              </span>
 
           
 
@@ -279,42 +292,35 @@
           <h3 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h3><p><a href="https://repo.continuum.io/archive/" target="_blank" rel="noopener">https://repo.continuum.io/archive/</a></p>
 <p>ubuntu18.04LTS的python默认version是python3.6.8，Anaconda3-5.2.0-Lniux-x86_64.sh就是其对应的anaconda对应的版本</p>
 <h3 id="2-安装"><a href="#2-安装" class="headerlink" title="2.安装"></a>2.安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bash Anaconda3-5.2.0-Linux-x86_64.sh</span><br></pre></td></tr></table></figure>
-
 <p>改变安装目录</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Anaconda3 will now be installed into this location:</span><br><span class="line">/home/fengshang/anaconda3</span><br></pre></td></tr></table></figure>
-
 <p>选择是否将anaconda加入环境变量中（这里的局部环境变量，即当前用户，如果要加入全集变量这里选择no ）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Do you wish the installer to prepend the Anaconda3 install location</span><br><span class="line">to PATH <span class="keyword">in</span> your /home/fengshang/.bashrc ? [yes|no]</span><br><span class="line">[no] &gt;&gt;&gt; yes</span><br></pre></td></tr></table></figure>
-
 <p>安装完毕后，无论是将环境边界配置在bashrc中还是全局变量/etc/prifile中，都需要对其进行souce操作。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">source</span> /home/fengshang/.bashrc</span><br></pre></td></tr></table></figure>
-
 <h3 id="3-使用"><a href="#3-使用" class="headerlink" title="3.使用"></a>3.使用</h3><p>环境相关</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ conda create -n 新建虚拟环境的名字 python=对应的版本号</span><br><span class="line">$ <span class="built_in">source</span> activate 虚拟环境的名字</span><br><span class="line">$ <span class="built_in">source</span> deactivate 虚拟环境的名字</span><br><span class="line">$ conda create --name [虚拟环境名] -- <span class="built_in">clone</span> [colne的环境]</span><br><span class="line">$ conda remove --name [虚拟环境名] -all //删除learn环境及下属所有包</span><br><span class="line"></span><br><span class="line">$ conda env list //列出conda管理的所有环境</span><br><span class="line">$ conda env <span class="built_in">export</span> &gt; environment.yaml //将包信息存入yaml文件中</span><br><span class="line">$ conda env create -f environment.yaml //当需要重新创建一个相同的虚拟环境时可以用</span><br></pre></td></tr></table></figure>
-
 <p>包相关</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ conda install 包的名字</span><br><span class="line">$ conda remove 包的名字  </span><br><span class="line">$ conda update 包的名字  </span><br><span class="line">$ conda list //列出当前环境的所有包</span><br></pre></td></tr></table></figure>
-
 <h3 id="4-Jupyter"><a href="#4-Jupyter" class="headerlink" title="4.Jupyter"></a>4.Jupyter</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ conda install jupyter</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ jupyter notebook --generate-config</span><br><span class="line">Writing default config to: /home/fengshang/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
-
 <p>修改配置文件<strong>jupyter_notebook_config.py</strong>，修改启动时打开的路径</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c.NotebookApp.notebook_dir = <span class="string">'路径'</span></span><br></pre></td></tr></table></figure>
-
 <p>Jupyter启动</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ juypter notebook    <span class="comment"># 默认端口启动，8888</span></span><br><span class="line">$ jupyter notebook --port &lt;port number&gt;   <span class="comment"># 指定端口启动</span></span><br><span class="line">$ jupyter notebook --no-browser   <span class="comment"># 启动服务器但不在浏览器中打开</span></span><br></pre></td></tr></table></figure>
-
 <h3 id="5-相关问题"><a href="#5-相关问题" class="headerlink" title="5.相关问题"></a>5.相关问题</h3><p>Q：执行<strong>conda create -n 环境的名字 python=版本号</strong>时，出现CondaHTTPError: HTTP 000 CONNECTION FAILED for url <a href="https://repo.anaconda.com/pkgs/r/linux-64/repodata.json.bz2" target="_blank" rel="noopener">https://repo.anaconda.com/pkgs/r/linux-64/repodata.json.bz2</a></p>
 <p>A：更新conda……直接翻墙解决或者更换源</p>
 <p>更新了好久才发现虚拟机没有共享到主机的网络，没翻墙，难怪下包下得那么慢……</p>
 <p>so研究了一下虚拟机如何共享主机网络</p>
 <h4 id="1-开启网络共享"><a href="#1-开启网络共享" class="headerlink" title="1.开启网络共享"></a>1.开启网络共享</h4><p><strong>控制面板\所有控制面板项\网络连接</strong>里将WLAN的共享打开</p>
 <h4 id="2-主机打开cmd获取ip"><a href="#2-主机打开cmd获取ip" class="headerlink" title="2.主机打开cmd获取ip"></a>2.主机打开cmd获取ip</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipconfig</span><br></pre></td></tr></table></figure>
-
 <h4 id="3-shadowsocks"><a href="#3-shadowsocks" class="headerlink" title="3.shadowsocks"></a>3.shadowsocks</h4><p>主机的ss设置成允许其他设备接入</p>
 <h4 id="4-虚拟机"><a href="#4-虚拟机" class="headerlink" title="4.虚拟机"></a>4.虚拟机</h4><p>网络设置里将主机的IP复制过来，端口为1080，浏览器设置成使用本地代理</p>
-<p>下载速度飞起……</p>
+<p>Q:由于更新了python版本，导致conda无法使用</p>
+<p>A:因为安装jupyter时自动更新了python版本3.6—&gt;3.7，导致conda无法使用。发现并不需要再安装jupyter，系统已有……</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python3 -m pip install --upgrade pip</span><br><span class="line">$ python3 -m pip install jupyter</span><br></pre></td></tr></table></figure>
+<p><a href="https://stackoverflow.com/questions/54546450/how-does-using-conda-to-install-a-package-change-my-python-version-and-remove-co" target="_blank" rel="noopener">https://stackoverflow.com/questions/54546450/how-does-using-conda-to-install-a-package-change-my-python-version-and-remove-co</a></p>
+<p><a href="https://blog.csdn.net/Code_7900x/article/details/84891833" target="_blank" rel="noopener">https://blog.csdn.net/Code_7900x/article/details/84891833</a></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[1]<a href="https://blog.csdn.net/Lucky_yw/article/details/89387073" target="_blank" rel="noopener">https://blog.csdn.net/Lucky_yw/article/details/89387073</a></p>
 <p>[2]<a href="https://blog.csdn.net/weixin_41366941/article/details/90549191" target="_blank" rel="noopener">https://blog.csdn.net/weixin_41366941/article/details/90549191</a></p>
 <p>[3]<a href="https://mp.weixin.qq.com/s?src=11&amp;timestamp=1577873187&amp;ver=2070&amp;signature=QQPW*kOKH-zI9m1PSo*6x*ZzikP7730A*B*iTAcexL4oJeOrvcSOiXr*vNtz8kgbCHxcz646uxMTN9OKuX6oOOFR3saFfIReFlLSHbTNK4m6sDhA9LcP3rOTE0qZzQt5&amp;new=1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?src=11&amp;timestamp=1577873187&amp;ver=2070&amp;signature=QQPW*kOKH-zI9m1PSo*6x*ZzikP7730A*B*iTAcexL4oJeOrvcSOiXr*vNtz8kgbCHxcz646uxMTN9OKuX6oOOFR3saFfIReFlLSHbTNK4m6sDhA9LcP3rOTE0qZzQt5&amp;new=1</a></p>
@@ -474,7 +480,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/30/machine%20learning/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/30/machine%20learning_1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -488,7 +494,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/12/30/machine%20learning/" class="post-title-link" itemprop="url">Notes for machine learning</a>
+            <a href="/2019/12/30/machine%20learning_1/" class="post-title-link" itemprop="url">Notes for machine learning 1</a>
         </h1>
 
         <div class="post-meta">
@@ -505,7 +511,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-02 16:13:56" itemprop="dateModified" datetime="2020-01-02T16:13:56+08:00">2020-01-02</time>
+                <time title="Modified: 2020-01-03 11:28:16" itemprop="dateModified" datetime="2020-01-03T11:28:16+08:00">2020-01-03</time>
               </span>
 
           
@@ -536,7 +542,7 @@ J(\theta)=\frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x_i)-y_i)^2</script><h5 id="1-Grad
 <p>不需要归一化</p>
 <p>矩阵如果不可逆，删除相似特征</p>
 <h5 id="3-Summary"><a href="#3-Summary" class="headerlink" title="(3)Summary"></a>(3)Summary</h5><p>n小，选择normal equation；n大，选择gradient descent。Andrew Ng的临界数值是10000。</p>
-<h4 id="2-Logistic-Regression-for-classification"><a href="#2-Logistic-Regression-for-classification" class="headerlink" title="2.Logistic Regression(for classification)"></a>2.Logistic Regression(for classification)</h4><script type="math/tex; mode=display">
+<h4 id="2-Logistic-Regression-for-classification"><a href="#2-Logistic-Regression-for-classification" class="headerlink" title="2. Logistic Regression(for classification)"></a>2. Logistic Regression(for classification)</h4><script type="math/tex; mode=display">
 h_\theta(x)=\frac{1}{1+e^{-\theta^Tx}}\quad \quad \quad 0<h_\theta(x)<1</script><script type="math/tex; mode=display">
 找\theta^Tx的包围区域函数，使整体分割为0和1两部分</script><script type="math/tex; mode=display">
 Cost(h_\theta(x),y)=-ylog(h_\theta(x))-(1-y)log(1-h_\theta(x))</script><script type="math/tex; mode=display">
@@ -546,7 +552,9 @@ J(\theta)=\frac{1}{m}\sum_{i=1}^{m}Cost(h_\theta(x^{(i)}),y^{(i)})</script><h5 i
 =\theta_j-\alpha\sum_{i=1}^{m}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}</script><p>}</p>
 <h5 id="2-Conjugate-gradient、BFGS、L-BFGS"><a href="#2-Conjugate-gradient、BFGS、L-BFGS" class="headerlink" title="(2)Conjugate gradient、BFGS、L-BFGS"></a>(2)Conjugate gradient、BFGS、L-BFGS</h5><h5 id="3-MultiClass-Classification"><a href="#3-MultiClass-Classification" class="headerlink" title="(3)MultiClass Classification"></a>(3)MultiClass Classification</h5><p>当分类结果不只两个时，分割，多条曲线寻找</p>
 <script type="math/tex; mode=display">
-max\quad{h_\theta^{(i)}(x)}</script><h3 id="Unsupervised-learning"><a href="#Unsupervised-learning" class="headerlink" title="Unsupervised learning"></a>Unsupervised learning</h3><h3 id="Program-environment"><a href="#Program-environment" class="headerlink" title="Program environment"></a>Program environment</h3><p>Octave or matlab</p>
+max\quad{h_\theta^{(i)}(x)}</script><h4 id="3-Regularization"><a href="#3-Regularization" class="headerlink" title="3. Regularization"></a>3. Regularization</h4><script type="math/tex; mode=display">
+J(\theta)=\frac{1}{2m}[\sum_{i=1}^{m}(h_\theta(x_i)-y_i)^2+\lambda\sum_{j=1}^{n}\theta_j^2]</script><script type="math/tex; mode=display">
+J(\theta)=-[\frac{1}{m}\sum_{i=1}^{m}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))]+\frac{\lambda}{2m}\sum_{j=1}^{n}\theta_j^2</script><h3 id="Unsupervised-learning"><a href="#Unsupervised-learning" class="headerlink" title="Unsupervised learning"></a>Unsupervised learning</h3><h3 id="Program-environment"><a href="#Program-environment" class="headerlink" title="Program environment"></a>Program environment</h3><p>Octave or matlab</p>
 
       
     </div>
@@ -885,7 +893,7 @@ max\quad{h_\theta^{(i)}(x)}</script><h3 id="Unsupervised-learning"><a href="#Uns
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020-01-02</span>
+  <span itemprop="copyrightYear">2020-01-05</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
