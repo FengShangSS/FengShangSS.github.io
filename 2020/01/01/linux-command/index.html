@@ -48,15 +48,20 @@
   };
 </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="施少峰的博客">
-<meta property="og:url" content="http://yoursite.com/tags/anaconda/index.html">
+  <meta name="description" content="新建文件夹 1$ mkdir filename 查找文件 12$ find &lt;指定目录&gt; &lt;指定条件&gt; &lt;指定动作&gt;$ find &#x2F; -name  &#39;interfaces&#39; 删除文件&#x2F;目录 12$ rm -rf 目录 删除文件夹 -r 向下递归$ rm -f 文件 删除文件 -f 直接强行删除 其他文件相关 123456789$ mv a b &#x2F;&#x2F;重命名$ to">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux Command">
+<meta property="og:url" content="http://yoursite.com/2020/01/01/linux-command/index.html">
 <meta property="og:site_name" content="施少峰的博客">
+<meta property="og:description" content="新建文件夹 1$ mkdir filename 查找文件 12$ find &lt;指定目录&gt; &lt;指定条件&gt; &lt;指定动作&gt;$ find &#x2F; -name  &#39;interfaces&#39; 删除文件&#x2F;目录 12$ rm -rf 目录 删除文件夹 -r 向下递归$ rm -f 文件 删除文件 -f 直接强行删除 其他文件相关 123456789$ mv a b &#x2F;&#x2F;重命名$ to">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-12-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-01-11T11:37:08.614Z">
 <meta property="article:author" content="施少峰">
+<meta property="article:tag" content="ubuntu">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/tags/anaconda/">
+<link rel="canonical" href="http://yoursite.com/2020/01/01/linux-command/">
 
 
 <script id="page-configurations">
@@ -64,11 +69,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>Tag: anaconda | 施少峰的博客</title>
+  <title>Linux Command | 施少峰的博客</title>
   
 
 
@@ -173,50 +178,109 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">anaconda
-          <small>Tag</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/01/linux-command/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="施少峰">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="施少峰的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux Command
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-01-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-01T00:00:00+08:00">2020-01-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-11 19:37:08" itemprop="dateModified" datetime="2020-01-11T19:37:08+08:00">2020-01-11</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2020</h1>
+        <p>新建文件夹</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir filename</span><br></pre></td></tr></table></figure>
+<p>查找文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ find &lt;指定目录&gt; &lt;指定条件&gt; &lt;指定动作&gt;</span><br><span class="line">$ find / -name  <span class="string">'interfaces'</span></span><br></pre></td></tr></table></figure>
+<p>删除文件/目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rm -rf 目录 删除文件夹 -r 向下递归</span><br><span class="line">$ rm -f 文件 删除文件 -f 直接强行删除</span><br></pre></td></tr></table></figure>
+<p>其他文件相关</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ mv a b //重命名</span><br><span class="line">$ top -i //忽略idle进程</span><br><span class="line">$ file filename //查看文件属性</span><br><span class="line">$ <span class="built_in">stat</span> filename //查看文件属性</span><br><span class="line">$ ls -l //查看文件属性</span><br><span class="line">$ touch //新建</span><br><span class="line">$ cat filename //第一行开始显示</span><br><span class="line">$ more filename</span><br><span class="line">$ less filename</span><br></pre></td></tr></table></figure>
+<p>vim-gtk调用了gtk图形界面，vim只有命令行界面，个人感觉没区别</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install vim-gtk</span><br></pre></td></tr></table></figure>
+<p>在jupyter下的File—&gt;Download as —&gt;python(.py)可以将.ipynb转化为.py文件。</p>
+<p>git指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br><span class="line">$ git <span class="built_in">clone</span> </span><br><span class="line">$ git remote add origin git  “项目地址”</span><br><span class="line">$ git add -A</span><br><span class="line">$ git commit -m “<span class="string">"</span></span><br><span class="line"><span class="string">$ git push -u origin master</span></span><br></pre></td></tr></table></figure>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-01-01T00:00:00+08:00"
-              content="2020-01-01">
-          01-01
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ubuntu/" rel="tag"># ubuntu</a>
+          </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/01/01/anaconda/" itemprop="url">
-            <span itemprop="name">Anaconda3安装及相关问题</span>
-          </a>
-      </h2>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/31/altium_designer/" rel="prev" title="Altium Designer19">
+      <i class="fa fa-chevron-left"></i> Altium Designer19
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/01/anaconda/" rel="next" title="Anaconda3安装及相关问题">
+      Anaconda3安装及相关问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-    </div>
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>

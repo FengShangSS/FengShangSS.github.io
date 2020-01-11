@@ -56,7 +56,7 @@
 <meta property="og:description" content="Supervised learning“right answers”given E.g.  ​    Regression - predict continuous valued output(price) ​     Classification - Discrete valued output(0 or 1) 1. Linear regression J(\theta)&#x3D;\frac{1}{2m">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-12-30T13:25:00.000Z">
-<meta property="article:modified_time" content="2020-01-03T03:28:16.739Z">
+<meta property="article:modified_time" content="2020-01-07T04:41:20.442Z">
 <meta property="article:author" content="施少峰">
 <meta property="article:tag" content="machine learning">
 <meta name="twitter:card" content="summary">
@@ -213,7 +213,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-03 11:28:16" itemprop="dateModified" datetime="2020-01-03T11:28:16+08:00">2020-01-03</time>
+                <time title="Modified: 2020-01-07 12:41:20" itemprop="dateModified" datetime="2020-01-07T12:41:20+08:00">2020-01-07</time>
               </span>
 
           
@@ -263,7 +263,10 @@ J(\theta)=\frac{1}{m}\sum_{i=1}^{m}Cost(h_\theta(x^{(i)}),y^{(i)})</script><h5 i
 <script type="math/tex; mode=display">
 max\quad{h_\theta^{(i)}(x)}</script><h4 id="3-Regularization"><a href="#3-Regularization" class="headerlink" title="3. Regularization"></a>3. Regularization</h4><script type="math/tex; mode=display">
 J(\theta)=\frac{1}{2m}[\sum_{i=1}^{m}(h_\theta(x_i)-y_i)^2+\lambda\sum_{j=1}^{n}\theta_j^2]</script><script type="math/tex; mode=display">
-J(\theta)=-[\frac{1}{m}\sum_{i=1}^{m}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))]+\frac{\lambda}{2m}\sum_{j=1}^{n}\theta_j^2</script><h3 id="Unsupervised-learning"><a href="#Unsupervised-learning" class="headerlink" title="Unsupervised learning"></a>Unsupervised learning</h3><h3 id="Program-environment"><a href="#Program-environment" class="headerlink" title="Program environment"></a>Program environment</h3><p>Octave or matlab</p>
+J(\theta)=-\frac{1}{m}[\sum_{i=1}^{m}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))]+\frac{\lambda}{2m}\sum_{j=1}^{n}\theta_j^2</script><h3 id="Unsupervised-learning"><a href="#Unsupervised-learning" class="headerlink" title="Unsupervised learning"></a>Unsupervised learning</h3><h3 id="Program-environment"><a href="#Program-environment" class="headerlink" title="Program environment"></a>Program environment</h3><p>Octave or matlab</p>
+<h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p>梯度下降法和多元极值和点估计的关系？</p>
+<p>一个是如何列出方程（最小二乘、极大似然），一个是如何解方程（梯度下降），其实是求最小值</p>
+<p><a href="https://www.zhihu.com/question/24900876" target="_blank" rel="noopener">https://www.zhihu.com/question/24900876</a></p>
 
     </div>
 
@@ -348,7 +351,7 @@ J(\theta)=-[\frac{1}{m}\sum_{i=1}^{m}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})lo
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Supervised-learning"><span class="nav-number">1.</span> <span class="nav-text">Supervised learning</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Linear-regression"><span class="nav-number">1.1.</span> <span class="nav-text">1. Linear regression</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Gradient-Descent梯度下降法："><span class="nav-number">1.1.1.</span> <span class="nav-text">(1)Gradient Descent梯度下降法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Normal-Equation正规方程法"><span class="nav-number">1.1.2.</span> <span class="nav-text">(2)Normal  Equation正规方程法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-Summary"><span class="nav-number">1.1.3.</span> <span class="nav-text">(3)Summary</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Logistic-Regression-for-classification"><span class="nav-number">1.2.</span> <span class="nav-text">2. Logistic Regression(for classification)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Gradient-Descent梯度下降法：-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">(1)Gradient Descent梯度下降法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Conjugate-gradient、BFGS、L-BFGS"><span class="nav-number">1.2.2.</span> <span class="nav-text">(2)Conjugate gradient、BFGS、L-BFGS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-MultiClass-Classification"><span class="nav-number">1.2.3.</span> <span class="nav-text">(3)MultiClass Classification</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Regularization"><span class="nav-number">1.3.</span> <span class="nav-text">3. Regularization</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unsupervised-learning"><span class="nav-number">2.</span> <span class="nav-text">Unsupervised learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Program-environment"><span class="nav-number">3.</span> <span class="nav-text">Program environment</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Supervised-learning"><span class="nav-number">1.</span> <span class="nav-text">Supervised learning</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Linear-regression"><span class="nav-number">1.1.</span> <span class="nav-text">1. Linear regression</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Gradient-Descent梯度下降法："><span class="nav-number">1.1.1.</span> <span class="nav-text">(1)Gradient Descent梯度下降法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Normal-Equation正规方程法"><span class="nav-number">1.1.2.</span> <span class="nav-text">(2)Normal  Equation正规方程法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-Summary"><span class="nav-number">1.1.3.</span> <span class="nav-text">(3)Summary</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Logistic-Regression-for-classification"><span class="nav-number">1.2.</span> <span class="nav-text">2. Logistic Regression(for classification)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Gradient-Descent梯度下降法：-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">(1)Gradient Descent梯度下降法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Conjugate-gradient、BFGS、L-BFGS"><span class="nav-number">1.2.2.</span> <span class="nav-text">(2)Conjugate gradient、BFGS、L-BFGS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-MultiClass-Classification"><span class="nav-number">1.2.3.</span> <span class="nav-text">(3)MultiClass Classification</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Regularization"><span class="nav-number">1.3.</span> <span class="nav-text">3. Regularization</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unsupervised-learning"><span class="nav-number">2.</span> <span class="nav-text">Unsupervised learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Program-environment"><span class="nav-number">3.</span> <span class="nav-text">Program environment</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Question"><span class="nav-number">4.</span> <span class="nav-text">Question</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -362,7 +365,7 @@ J(\theta)=-[\frac{1}{m}\sum_{i=1}^{m}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})lo
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
