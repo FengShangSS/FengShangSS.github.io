@@ -56,7 +56,7 @@
 <meta property="og:description" content="1、查看ssh连接history 12345cat &#x2F;var&#x2F;log&#x2F;secure | awk &#39;&#x2F;Failed&#x2F;&amp;#123;print $(NF-3)&amp;#125;&#39; | sort | uniq -c | awk &#39;&amp;#123;print $2&quot; &#x3D; &quot;$1;&amp;#125;&#39;    #查看连接ipcat &#x2F;var&#x2F;log&#x2F;secure* | grep &#39;Failed password&#39; | grep">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-02-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-02-26T06:33:22.644Z">
+<meta property="article:modified_time" content="2020-02-26T06:34:58.703Z">
 <meta property="article:author" content="施少峰">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
@@ -213,7 +213,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-26 14:33:22" itemprop="dateModified" datetime="2020-02-26T14:33:22+08:00">2020-02-26</time>
+                <time title="Modified: 2020-02-26 14:34:58" itemprop="dateModified" datetime="2020-02-26T14:34:58+08:00">2020-02-26</time>
               </span>
 
           
@@ -243,7 +243,7 @@
 <p>4、firewall相关</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --state</span><br><span class="line">firewall-cmd --get-default-zone</span><br><span class="line">firewall-cmd --get-active-zones</span><br><span class="line"></span><br><span class="line">firewall-cmd --zone=public --add-port=15688/tcp --permanent</span><br><span class="line">firewall-cmd --permanent --zone=public --remove-port=22/tcp</span><br><span class="line">firewall-cmd --reload</span><br><span class="line">firewall-cmd --zone=public --query-port=15688/tcp</span><br><span class="line">firewall-cmd --zone=public --list-ports  <span class="comment"># 查看防火墙开放端口</span></span><br><span class="line">firewall-cmd --permanent --list-port</span><br><span class="line">firewall-cmd --zone=public --list-all</span><br><span class="line">firewall-cmd --query-port=15688/tcp</span><br></pre></td></tr></table></figure>
 <p>5、SELinux</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">yum provides semanage</span><br><span class="line">yum -y install policycoreutils-python</span><br><span class="line"></span><br><span class="line">/usr/sbin/sestatus -v</span><br><span class="line"><span class="comment">#修改/etc/selinux/config 文件,将SELINUX=enforcing改为SELINUX=enabled,重启机器即可</span></span><br><span class="line">semanage port -l | grep ssh</span><br><span class="line">semanage port -a -t ssh_port_t -p tcp 12138</span><br><span class="line">semanage port -d -t ssh_port_t -p tcp 12138</span><br><span class="line"></span><br><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">yum provides semanage</span><br><span class="line">yum -y install policycoreutils-python</span><br><span class="line"></span><br><span class="line">/usr/sbin/sestatus -v</span><br><span class="line"><span class="comment">#修改/etc/selinux/config 文件,将SELINUX=enforcing改为SELINUX=enabled,重启机器即可</span></span><br><span class="line">semanage port -l | grep ssh</span><br><span class="line">semanage port -a -t ssh_port_t -p tcp 15688</span><br><span class="line">semanage port -d -t ssh_port_t -p tcp 15688</span><br><span class="line"></span><br><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure>
 <p>22端口注释掉</p>
 
     </div>
