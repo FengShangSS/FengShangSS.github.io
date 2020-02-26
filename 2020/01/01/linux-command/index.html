@@ -48,15 +48,15 @@
   };
 </script>
 
-  <meta name="description" content="新建文件夹 1$ mkdir filename 查找文件 12$ find &lt;指定目录&gt; &lt;指定条件&gt; &lt;指定动作&gt;$ find &#x2F; -name  &#39;interfaces&#39; 删除文件&#x2F;目录 12$ rm -rf 目录 删除文件夹 -r 向下递归$ rm -f 文件 删除文件 -f 直接强行删除 其他文件相关 123456789$ mv a b &#x2F;&#x2F;重命名$ to">
+  <meta name="description" content="新建文件 12$ mkdir filename&#x2F;&#x2F;目录$ touch filename&#x2F;&#x2F;文件 查找文件 12$ find &lt;指定目录&gt; &lt;指定条件&gt; &lt;指定动作&gt;$ find &#x2F; -name  &#39;interfaces&#39; 删除文件&#x2F;目录 12$ rm -rf 目录 删除文件夹 -r 向下递归$ rm -f 文件 删除文件 -f 直接强行删除 其他文件相关 123">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux Command">
 <meta property="og:url" content="http://yoursite.com/2020/01/01/linux-command/index.html">
 <meta property="og:site_name" content="施少峰的博客">
-<meta property="og:description" content="新建文件夹 1$ mkdir filename 查找文件 12$ find &lt;指定目录&gt; &lt;指定条件&gt; &lt;指定动作&gt;$ find &#x2F; -name  &#39;interfaces&#39; 删除文件&#x2F;目录 12$ rm -rf 目录 删除文件夹 -r 向下递归$ rm -f 文件 删除文件 -f 直接强行删除 其他文件相关 123456789$ mv a b &#x2F;&#x2F;重命名$ to">
+<meta property="og:description" content="新建文件 12$ mkdir filename&#x2F;&#x2F;目录$ touch filename&#x2F;&#x2F;文件 查找文件 12$ find &lt;指定目录&gt; &lt;指定条件&gt; &lt;指定动作&gt;$ find &#x2F; -name  &#39;interfaces&#39; 删除文件&#x2F;目录 12$ rm -rf 目录 删除文件夹 -r 向下递归$ rm -f 文件 删除文件 -f 直接强行删除 其他文件相关 123">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-12-31T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-01-11T11:37:08.614Z">
+<meta property="article:modified_time" content="2020-01-19T03:48:12.682Z">
 <meta property="article:author" content="施少峰">
 <meta property="article:tag" content="ubuntu">
 <meta name="twitter:card" content="summary">
@@ -213,7 +213,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-11 19:37:08" itemprop="dateModified" datetime="2020-01-11T19:37:08+08:00">2020-01-11</time>
+                <time title="Modified: 2020-01-19 11:48:12" itemprop="dateModified" datetime="2020-01-19T11:48:12+08:00">2020-01-19</time>
               </span>
 
           
@@ -234,14 +234,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>新建文件夹</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir filename</span><br></pre></td></tr></table></figure>
+        <p>新建文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir filename//目录</span><br><span class="line">$ touch filename//文件</span><br></pre></td></tr></table></figure>
 <p>查找文件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ find &lt;指定目录&gt; &lt;指定条件&gt; &lt;指定动作&gt;</span><br><span class="line">$ find / -name  <span class="string">'interfaces'</span></span><br></pre></td></tr></table></figure>
 <p>删除文件/目录</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rm -rf 目录 删除文件夹 -r 向下递归</span><br><span class="line">$ rm -f 文件 删除文件 -f 直接强行删除</span><br></pre></td></tr></table></figure>
 <p>其他文件相关</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ mv a b //重命名</span><br><span class="line">$ top -i //忽略idle进程</span><br><span class="line">$ file filename //查看文件属性</span><br><span class="line">$ <span class="built_in">stat</span> filename //查看文件属性</span><br><span class="line">$ ls -l //查看文件属性</span><br><span class="line">$ touch //新建</span><br><span class="line">$ cat filename //第一行开始显示</span><br><span class="line">$ more filename</span><br><span class="line">$ less filename</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ mv a b //重命名</span><br><span class="line">$ cp <span class="built_in">source</span> destination //复制  -r复制文件夹</span><br><span class="line">$ top -i //忽略idle进程</span><br><span class="line">$ file filename //查看文件属性</span><br><span class="line">$ <span class="built_in">stat</span> filename //查看文件属性</span><br><span class="line">$ ls -l //查看文件属性</span><br><span class="line"></span><br><span class="line">$ cat filename //第一行开始显示</span><br><span class="line">$ more filename</span><br><span class="line">$ less filename</span><br><span class="line"></span><br><span class="line">$ du -sh * //查看该目录大小</span><br><span class="line">$ du -sm 目录 //返回该文件夹总M数</span><br><span class="line">$ du -h 目录名 //查看指定文件夹下的所有文件大小（包含子文件夹）</span><br><span class="line">$ df -h  //linux系统以磁盘分区为单位查看文件系统，可以加上参数查看磁盘剩余空间信息</span><br><span class="line">$ df -a //全部的文件系统的使用情况</span><br><span class="line"></span><br><span class="line">$ whoami</span><br><span class="line">$ lastlog</span><br><span class="line">$ <span class="built_in">pwd</span></span><br></pre></td></tr></table></figure>
 <p>vim-gtk调用了gtk图形界面，vim只有命令行界面，个人感觉没区别</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install vim-gtk</span><br></pre></td></tr></table></figure>
 <p>在jupyter下的File—&gt;Download as —&gt;python(.py)可以将.ipynb转化为.py文件。</p>
@@ -344,14 +344,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

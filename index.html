@@ -178,7 +178,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/06/numpy/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/24/2020-2-24-ssh-%E7%AB%AF%E5%8F%A3%E4%BF%AE%E6%94%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -192,7 +192,76 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/06/numpy/" class="post-title-link" itemprop="url">Numpy</a>
+            <a href="/2020/02/24/2020-2-24-ssh-%E7%AB%AF%E5%8F%A3%E4%BF%AE%E6%94%B9/" class="post-title-link" itemprop="url">ssh 端口修改</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-02-24 00:00:00 / Modified: 21:53:58" itemprop="dateCreated datePublished" datetime="2020-02-24T00:00:00+08:00">2020-02-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>1、查看ssh连接history</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat /var/<span class="built_in">log</span>/secure | awk <span class="string">'/Failed/&#123;print $(NF-3)&#125;'</span> | sort | uniq -c | awk <span class="string">'&#123;print $2" = "$1;&#125;'</span>    <span class="comment">#查看连接ip</span></span><br><span class="line"></span><br><span class="line">cat /var/<span class="built_in">log</span>/secure* | grep <span class="string">'Failed password'</span> | grep sshd | awk <span class="string">'&#123;print $1,$2&#125;'</span> | sort | uniq -c   <span class="comment">#查看连接失败次数</span></span><br><span class="line"></span><br><span class="line">less /var/<span class="built_in">log</span>/secure|grep <span class="string">'Accepted'</span>    <span class="comment">#查看成功连接</span></span><br></pre></td></tr></table></figure>
+<p>2、ssh认证次数限制</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line">Port xxx 开启其他端口</span><br><span class="line">ClientAliveInterval 60:每隔60s，向客户端发送一次请求。</span><br><span class="line">ClientAliveCountMax 3:超过3次无响应就断开链接。</span><br></pre></td></tr></table></figure>
+<p>3、重启sshd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart sshd</span><br><span class="line">ss -ntl 或 netstat -ntl 查看一下端口</span><br><span class="line">netstat  -anp|grep ssh</span><br></pre></td></tr></table></figure>
+<p>4、firewall相关</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --state</span><br><span class="line">firewall-cmd --get-default-zone</span><br><span class="line">firewall-cmd --get-active-zones</span><br><span class="line"></span><br><span class="line">firewall-cmd --zone=public --add-port=12138/tcp --permanent</span><br><span class="line">firewall-cmd --permanent --zone=public --remove-port=22/tcp</span><br><span class="line">firewall-cmd --reload</span><br><span class="line">firewall-cmd --zone=public --query-port=12138/tcp</span><br><span class="line">firewall-cmd --zone=public --list-ports  <span class="comment"># 查看防火墙开放端口</span></span><br><span class="line">firewall-cmd --permanent --list-port</span><br><span class="line">firewall-cmd --zone=public --list-all</span><br><span class="line">firewall-cmd --query-port=12138/tcp</span><br></pre></td></tr></table></figure>
+<p>5、SELinux</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">yum provides semanage</span><br><span class="line">yum -y install policycoreutils-python</span><br><span class="line"></span><br><span class="line">/usr/sbin/sestatus -v</span><br><span class="line"><span class="comment">#修改/etc/selinux/config 文件,将SELINUX=enforcing改为SELINUX=enabled,重启机器即可</span></span><br><span class="line">semanage port -l | grep ssh</span><br><span class="line">semanage port -a -t ssh_port_t -p tcp 12138</span><br><span class="line">semanage port -d -t ssh_port_t -p tcp 12138</span><br><span class="line"></span><br><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure>
+<p>22端口注释掉</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/06/shadowsocks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="施少峰">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="施少峰的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/06/shadowsocks/" class="post-title-link" itemprop="url">shadowsocks</a>
         </h1>
 
         <div class="post-meta">
@@ -202,14 +271,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-01-06 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-06T00:00:00+08:00">2020-01-06</time>
+              <time title="Created: 2020-02-06 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-06T00:00:00+08:00">2020-02-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-07 12:25:37" itemprop="dateModified" datetime="2020-01-07T12:25:37+08:00">2020-01-07</time>
+                <time title="Modified: 2020-02-26 14:27:54" itemprop="dateModified" datetime="2020-02-26T14:27:54+08:00">2020-02-26</time>
               </span>
 
           
@@ -223,41 +292,371 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numpy.loadtxt(fname, dtype=&lt;class 'float'&gt;, comments='#', delimiter=None, converters=None, skiprows=0, usecols=None, unpack=False, ndmin=0, encoding='bytes', max_rows=None)   #out:ndarray</span><br></pre></td></tr></table></figure>
-<div class="table-container">
+          <h3 id="centos7"><a href="#centos7" class="headerlink" title="centos7"></a>centos7</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -O https://bootstrap.pypa.io/get-pip.py</span><br><span class="line">python get-pip.py</span><br><span class="line">pip -V </span><br><span class="line">pip install shadowsocks</span><br><span class="line">vi /etc/shadowsocks.json</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"server"</span>:<span class="string">"0.0.0.0"</span>,</span><br><span class="line">    <span class="attr">"server_port"</span>:<span class="number">4431</span>, </span><br><span class="line">    <span class="attr">"local_port"</span>:<span class="number">1080</span>,</span><br><span class="line">    <span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line">    <span class="attr">"timeout"</span>:<span class="number">600</span>,</span><br><span class="line">    <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span></span><br><span class="line">&#125;<span class="comment">//single port</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"server"</span>:<span class="string">"0.0.0.0"</span>,</span><br><span class="line">    <span class="attr">"local_port"</span>:<span class="number">1080</span>,</span><br><span class="line">    <span class="attr">"port_password"</span>: &#123;</span><br><span class="line">      <span class="attr">"端口1"</span>: <span class="string">"密码1"</span>,</span><br><span class="line">      <span class="attr">"端口2"</span>: <span class="string">"密码2"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"timeout"</span>:<span class="number">600</span>,</span><br><span class="line">    <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span></span><br><span class="line">&#125;<span class="comment">//multi port</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/ssserver -d start  -c /etc/shadowsocks.json  <span class="comment">#start</span></span><br><span class="line">/usr/bin/ssserver -d restart  -c /etc/shadowsocks.json  <span class="comment">#restart</span></span><br><span class="line">top -p pid</span><br><span class="line">lsmod |grep bbr</span><br></pre></td></tr></table></figure>
+<h3 id="Problems"><a href="#Problems" class="headerlink" title="Problems:"></a>Problems:</h3><p>Q:vps的特定端口ping不通，昨晚能ping通的，第二天就不行了，重装os无法解决。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ntlp</span><br></pre></td></tr></table></figure>
+<p>查看到该端口已被监听</p>
+<p>A:端口被q。</p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference:"></a>Reference:</h4><p><a href="https://blog.csdn.net/rankun1/article/details/81229150" target="_blank" rel="noopener">https://blog.csdn.net/rankun1/article/details/81229150</a></p>
+<p><a href="https://www.ffeeii.com/866.html" target="_blank" rel="noopener">https://www.ffeeii.com/866.html</a></p>
+<p><a href="https://blog.csdn.net/wjh2622075127/article/details/83865071" target="_blank" rel="noopener">https://blog.csdn.net/wjh2622075127/article/details/83865071</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/03/2020-2-3-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="施少峰">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="施少峰的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/03/2020-2-3-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" class="post-title-link" itemprop="url">stm32f4视频学习笔记（五）（源自正点原子）</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-03T00:00:00+08:00">2020-02-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-26 14:26:52" itemprop="dateModified" datetime="2020-02-26T14:26:52+08:00">2020-02-26</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="看门狗"><a href="#看门狗" class="headerlink" title="看门狗"></a>看门狗</h3><p>用于监测单片机程序运行状态的模块或者芯片，俗称“看门狗”(watchdog) 。</p>
+<p>STM32内置两个看门狗：独立看门狗和窗口看门狗。</p>
+<p>两个看门狗设备（独立看门狗/窗口看门狗)可以用来检测和 解决由软件错误引起的故障。当计数器达到给定的超时值时，触发一个中断（仅适用窗口看门狗）或者产生系统复位。</p>
+<h4 id="两个看门狗的区别"><a href="#两个看门狗的区别" class="headerlink" title="两个看门狗的区别"></a>两个看门狗的区别</h4><p>独立看门狗（IWDG)由专用的低速时钟（LSI)驱动，即使主时钟发生故障它仍有效。<br>独立看门狗适合应用于需要看门狗作为一个在主程序之外 能够完全独立工作，并且对时间精度要求低的场合。<br>窗口看门狗由从APB1时钟分频后得到时钟驱动。通过可配置的时间窗口来检测应用程序非正常的过迟或过早操作。<br>窗口看门狗最适合那些要求看门狗在精确计时窗口起作用的程序。</p>
+<h3 id="IWDG"><a href="#IWDG" class="headerlink" title="IWDG"></a>IWDG</h3><p>独立看门狗限制喂狗时间在0-x内，x由相关寄存器决定。喂狗的时间不能过晚。</p>
+<h4 id="独立看门狗工作原理描述"><a href="#独立看门狗工作原理描述" class="headerlink" title="独立看门狗工作原理描述"></a>独立看门狗工作原理描述</h4><p>在键值寄存器（IWDG_KR)中写入0xCCCC，开始启用独立看门狗。此时计数器开始从其复位值0xFFF递减，当计数器值计数到尾值0x000时会产生一个复位信号（IWDG_RESET)。<br>无论何时，只要在键值寄存器IWDG_KR中写入0xAAAA（通常说的喂狗）, 自动重装载寄存器IWDG_RLR的值就会重新加载到计数器，从而避免看门狗复位。<br>如果程序异常，就无法正常喂狗，从而系统复位。</p>
+<p>溢出时间计算：Tout=((4×2^prer) ×rlr) /32 （M4)</p>
+<p>时钟频率LSI=32K， 一个看门狗时钟周期就是最短超时时间。<br>最长超时时间= (IWDG_RLR寄存器最大值）X看门狗时钟周期</p>
+<p>重装载值最大为4095。因为只有12位。</p>
+<h4 id="独立看门狗操作步骤"><a href="#独立看门狗操作步骤" class="headerlink" title="独立看门狗操作步骤"></a>独立看门狗操作步骤</h4><p>初始化看门狗：预分频系数，重装载值。HAL_IWDG_Init(); 该函数在操作PR和RLR寄存器之前会取消写保护。<br>启动看门狗：HAL_IWDG_Start();<br>喂狗：HAL_IWDG_Refresh();</p>
+<h3 id="WWDG"><a href="#WWDG" class="headerlink" title="WWDG"></a>WWDG</h3><p>称为窗口就是因为其喂狗时间是一个有上下限的范围内(窗口），你可以通过设定相关寄存器，设定其上限时间（下限固定）。喂狗的时间不能过早也不能过晚。</p>
+<h4 id="窗口看门狗工作过程总结"><a href="#窗口看门狗工作过程总结" class="headerlink" title="窗口看门狗工作过程总结"></a>窗口看门狗工作过程总结</h4><p>STM32F的窗口看门狗中有一个7位的递减计数器T[6:0]，它会在出现下述2种情况之一时产生看门狗复位：<br>当喂狗的时候如果计数器的值大于某一设定数值W[6:0]时，此设定数值在WWDG_CFR寄存器定义。<br>当计数器的数值从0x40减到0x3F时【T6位跳变到0】。<br>如果启动了看门狗并且允许中断，当递减计数器等于0x40时产生早期唤醒中断（EWI），它可以用于喂狗以避免WWDG复位。</p>
+<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200203101005612.png" alt="image-20200203101005612"></p>
+<h4 id="窗口看门狗配置过程"><a href="#窗口看门狗配置过程" class="headerlink" title="窗口看门狗配置过程"></a>窗口看门狗配置过程</h4><p>使能窗口看门狗时钟：HAL_WWDG_MspInit中<br>初始化窗口看门狗：设置分频系数，窗口值，计数值等。HAL_WWDG_Init(); 该函数还可以使能窗口看门狗提前唤醒中断 。<br>设置提前唤醒中断优先级：HAL_WWDG_MspInit<br>编写提前唤醒中断处理函数，喂狗：<br>   HAL_WWDG_EarlyWakeupCallback()；<br>   HAL_WWDG_Refresh();</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/03/2020-2-3-freertos%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="施少峰">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="施少峰的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/03/2020-2-3-freertos%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" class="post-title-link" itemprop="url">freertos视频学习笔记（一）（源自正点原子）</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-03T00:00:00+08:00">2020-02-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-26 14:27:00" itemprop="dateModified" datetime="2020-02-26T14:27:00+08:00">2020-02-26</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>RTOS核心内容在于：实时内核。</p>
+<p>实时操作系统中，我们可以把要实现的功能划分为多个任务，每个任务负责实现其中的一部分，每个任务都是一个很简单的程序，通常是一个死循环。</p>
+<p>freertos的内核是可裁剪、可剥夺型的多任务内核，而且没有任务数限制。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/03/2020-2-3-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="施少峰">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="施少峰的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/03/2020-2-3-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" class="post-title-link" itemprop="url">stm32f4视频学习笔记（六）（源自正点原子）</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-03T00:00:00+08:00">2020-02-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-26 14:26:47" itemprop="dateModified" datetime="2020-02-26T14:26:47+08:00">2020-02-26</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h3><h4 id="计数器时钟可以由下列时钟源提供："><a href="#计数器时钟可以由下列时钟源提供：" class="headerlink" title="计数器时钟可以由下列时钟源提供："></a>计数器时钟可以由下列时钟源提供：</h4><p>内部时钟(CK_INT)<br>外部时钟模式1：外部输入脚(TIx)<br>外部时钟模式2：外部触发输入(ETR)(仅适用TIM2,3,4)<br>内部触发输入(ITRx)：使用一个定时器作为另一个定时器的预分频器，如可以配置一个定时器Timer1而作为另一个定时器Timer2的预分频器。</p>
+<p>除非APB1的分频系数是1，否则通用定时器的时钟等于APB1时钟的2倍。</p>
+<h4 id="计数器模式"><a href="#计数器模式" class="headerlink" title="计数器模式"></a>计数器模式</h4><p>通用定时器可以向上计数、向下计数、向上向下双向计数模式。<br>①向上计数模式：计数器从0计数到自动加载值(TIMx_ARR)，然后重新从0开始计数并且产生一个计数器溢出事件。<br>②向下计数模式：计数器从自动装入的值(TIMx_ARR)开始向下计数到0，然后从自动装入的值重新开始，并产生一个计数器向下溢出事件。<br>③中央对齐模式（向上/向下计数）：计数器从0开始计数到自动装入的值-1，产生一个计数器溢出事件，然后向下计数到1并且产生一个计数器溢出事件；然后再从0开始重新计数。</p>
+<h4 id="定时器中断实现步骤"><a href="#定时器中断实现步骤" class="headerlink" title="定时器中断实现步骤"></a>定时器中断实现步骤</h4><p>使能定时器时钟。<br>       __HAL_RCC_TIM3_CLK_ENABLE();<br>初始化定时器，配置ARR,PSC。<br>      HAL_TIM_Base_Init();<br>开启定时器/中断。<br>      HAL_TIM_Base_Start();<br>      HAL_TIM_Base_Start_IT();<br>设置中断优先级。<br>      HAL_NVIC_SetPriority();     HAL_NVIC_EnableIRQ();<br>编写中断服务函数。<br>      TIMx_IRQHandler();//中断服务函数<br>      HAL_TIM_IRQHandler();//中断处理入口函数<br>      HAL_TIM_PeriodElapsedCallback();//定时器更新中断回调函数</p>
+<h4 id="PWM-总结"><a href="#PWM-总结" class="headerlink" title="PWM 总结"></a>PWM 总结</h4><p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200203134309039.png" alt="image-20200203134309039"></p>
+<h4 id="PWM输出配置步骤"><a href="#PWM输出配置步骤" class="headerlink" title="PWM输出配置步骤"></a>PWM输出配置步骤</h4><p>使能定时器时钟和通道IO口时钟。<br>配置IO口复用映射：HAL_GPIO_Init();<br>初始化PWM时基参数：HAL_TIM_PWM_Init();<br>初始化PWM通道参数：HAL_TIM_PWM_ConfigChannel();<br>使能定时器PWM：HAL_TIM_PWM_Start();</p>
+<p>改变CCR的值来改变占空比。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TIM_SetCompare</span><span class="params">(TIM_HandleTypeDef *htim, <span class="keyword">unsigned</span> <span class="keyword">char</span> channel, <span class="keyword">unsigned</span> <span class="keyword">char</span> compare)</span></span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">    <span class="keyword">switch</span>(channel)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            htim-&gt;Instance-&gt;CCR1 = compare;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            htim-&gt;Instance-&gt;CCR2 = compare;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            htim-&gt;Instance-&gt;CCR3 = compare;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">            htim-&gt;Instance-&gt;CCR4 = compare;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="http://www.openedv.com/posts/list/12574.htm" target="_blank" rel="noopener">http://www.openedv.com/posts/list/12574.htm</a></p>
+<p>使用定时器的PWM模式只能在4个通道产生频率相同但占空比不同的输出信号<br>使用定时器的输出比较模式可以在4个通道上产生频率不同，占空比也不同的输出信号</p>
+<h4 id="输入捕获的一般配置关键步骤："><a href="#输入捕获的一般配置关键步骤：" class="headerlink" title="输入捕获的一般配置关键步骤："></a>输入捕获的一般配置关键步骤：</h4><p>使能定时器时钟和通道IO口时钟。<br>配置IO口复用映射：HAL_GPIO_Init();<br>初始化输入捕获时基参数：HAL_TIM_IC_Init();<br>初始化输入捕获通道参数：HAL_TIM_IC_ConfigChannel();<br>使能定时器（中断），设置优先级：HAL_TIM_IC_Start_IT();<br>编写中断服务回调函数：HAL_TIM_IC_CaptureCallback();</p>
+<p>读取：uint32_t HAL_TIM_ReadCapturedValue(TIM_HandleTypeDef *htim,<br>                                                                uint32_t Channel);</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/03/2020-2-3-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="施少峰">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="施少峰的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/03/2020-2-3-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" class="post-title-link" itemprop="url">stm32f4视频学习笔记（四）（源自正点原子）</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-03T00:00:00+08:00">2020-02-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-26 14:26:42" itemprop="dateModified" datetime="2020-02-26T14:26:42+08:00">2020-02-26</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="MDK调试"><a href="#MDK调试" class="headerlink" title="MDK调试"></a>MDK调试</h3><p>debug-&gt;setting-&gt;trace</p>
+<p>core clock为内核最大时钟。F103 72Mhz,F429 180Mhz。再勾选Trace Enable。晶振频率也设置一下。</p>
+<p>全局变量在读/写变量的时候停止运行：（局部变量不行，全局变量才可以）断点会停留在读/写操作的下一行代码。</p>
+<h3 id="外部中断"><a href="#外部中断" class="headerlink" title="外部中断"></a>外部中断</h3><div class="table-container">
 <table>
 <thead>
 <tr>
-<th style="text-align:center">input参数</th>
-<th style="text-align:center">作用</th>
+<th><strong>中断线</strong></th>
+<th><strong>M3</strong></th>
+<th><strong>M4</strong></th>
+<th><strong>M7</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">fname</td>
-<td style="text-align:center">文件名/路径</td>
+<td>EXTI线0~15:对应外部IO口的输入中断。</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
 </tr>
 <tr>
-<td style="text-align:center">delimiter</td>
-<td style="text-align:center">分割符</td>
+<td>EXTI线16：连接到PVD输出。</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
 </tr>
 <tr>
-<td style="text-align:center">usecols</td>
-<td style="text-align:center">读取的列</td>
+<td>EXTI线17：连接到RTC闹钟事件。</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
 </tr>
 <tr>
-<td style="text-align:center">unpack</td>
-<td style="text-align:center">是否将数据进行向量输出</td>
+<td>EXTI线18：连接到USB OTG FS唤醒事件。</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>EXTI线19：连接到以太网唤醒事件。</td>
+<td></td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>EXTI线20：连接到USB OTG HS(在FS中配置)唤醒事件</td>
+<td></td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>EXTI线21：连接到RTC入侵和时间戳事件。</td>
+<td></td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>EXTI线22：连接到RTC唤醒事件。</td>
+<td></td>
+<td></td>
+<td>√</td>
 </tr>
 </tbody>
 </table>
 </div>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">numpy.array(object, dtype=<span class="literal">None</span>, copy=<span class="literal">True</span>, order=<span class="string">'K'</span>, subok=<span class="literal">False</span>, ndmin=<span class="number">0</span>)</span><br><span class="line">numpy.transpose(a, axes=<span class="literal">None</span>) <span class="comment">#out:ndarray</span></span><br><span class="line">numpy.insert(arr, obj, values, axis=<span class="literal">None</span>) <span class="comment">#out:ndarray</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">matplotlib.pyplot.figure(num=None, figsize=None, dpi=None, facecolor=None, edgecolor=None, frameon=True, FigureClass=&lt;class 'matplotlib.figure.Figure'&gt;, clear=False, **kwargs)</span><br><span class="line"></span><br><span class="line">matplotlib.pyplot.plot(*args, scalex=<span class="literal">True</span>, scaley=<span class="literal">True</span>, data=<span class="literal">None</span>, **kwargs)</span><br><span class="line"></span><br><span class="line">matplotlib.pyplot.ylim(*args, **kwargs)<span class="comment">#y limit，一般给二维向量</span></span><br></pre></td></tr></table></figure>
-<p>python3的range就是xrange</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html" target="_blank" rel="noopener">https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html</a></p>
-<p><a href="https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.html" target="_blank" rel="noopener">https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.html</a></p>
-<p><a href="https://blog.csdn.net/ACID_lv_ing/article/details/87092714" target="_blank" rel="noopener">https://blog.csdn.net/ACID_lv_ing/article/details/87092714</a></p>
+<h4 id="IO口外部中断："><a href="#IO口外部中断：" class="headerlink" title="IO口外部中断："></a>IO口外部中断：</h4><p>STM32的每个IO都可以作为外部中断输入。<br>每个外部中断线可以独立的配置触发方式（上升沿，下降沿或者双边沿触发），触发/屏蔽，专用的状态位。</p>
+<p>GPIOx.0映射到EXTI0<br>GPIOx.1映射到EXTI1<br>…<br>…<br>GPIOx.14映射到EXTI14<br>GPIOx.15映射到EXTI15</p>
+<p>IO口外部中断在中断向量表中只分配了7个中断向量，也就是只能使用7个中断服务函数。外部中断线5~9分配一个中断向量，共用一个服务函数外部中断线10~15分配一个中断向量，共用一个中断服务函数。</p>
+<h4 id="外部中断的一般配置步骤："><a href="#外部中断的一般配置步骤：" class="headerlink" title="外部中断的一般配置步骤："></a>外部中断的一般配置步骤：</h4><p>使能IO口时钟。<br>初始化IO口，设置触发方式：HAL_GPIO_Init();<br>设置中断优先级，并使能中断通道。<br>编写中断服务函数：<br>函数中调用外部中断通用处理函数HAL_GPIO_EXTI_IRQHandler。<br>编写外部中断回调函数：HAL_GPIO_EXTI_Callback;</p>
+<p>上拉输入，下降沿触发。下拉输入，上升沿触发。</p>
 
       
     </div>
@@ -277,7 +676,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/02/do%20not%20starve%20together/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/02/2020-2-2-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -291,7 +690,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/02/do%20not%20starve%20together/" class="post-title-link" itemprop="url">Do Not Starve Together Command</a>
+            <a href="/2020/02/02/2020-2-2-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" class="post-title-link" itemprop="url">stm32f4视频学习笔记（三）（源自正点原子）</a>
         </h1>
 
         <div class="post-meta">
@@ -301,14 +700,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-01-02 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-02T00:00:00+08:00">2020-01-02</time>
+              <time title="Created: 2020-02-02 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-02T00:00:00+08:00">2020-02-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-11 19:39:04" itemprop="dateModified" datetime="2020-01-11T19:39:04+08:00">2020-01-11</time>
+                <time title="Modified: 2020-02-26 14:26:31" itemprop="dateModified" datetime="2020-02-26T14:26:31+08:00">2020-02-26</time>
               </span>
 
           
@@ -322,9 +721,53 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--server    </span></span><br><span class="line">c_save() <span class="comment">--立即保存当前世界</span></span><br><span class="line">c_reset(<span class="literal">true</span>|<span class="literal">false</span>)<span class="comment">--true删除当前世界并新建一个全新的世界；false重新加载当前世界。</span></span><br><span class="line">c_shutdown(<span class="literal">true</span>|<span class="literal">false</span>)<span class="comment">--true保存并关闭当前世界；false不保存直接关闭当前世界</span></span><br><span class="line">c_rollback(n)<span class="comment">--回档</span></span><br><span class="line">c_regenerateworld()<span class="comment">--重新生成世界</span></span><br><span class="line">c_announce(<span class="string">""</span>)</span><br><span class="line">c_connect(<span class="string">"ip"</span>, port, <span class="string">"password"</span>)<span class="comment">--直连</span></span><br><span class="line">c_skip(n)</span><br><span class="line">c_togglevotekick()<span class="comment">--投票踢人</span></span><br><span class="line">TheNet:GenerateClusterToken() <span class="comment">--试了一下没用</span></span><br><span class="line"></span><br><span class="line">AllPlayers[number]</span><br><span class="line">c_listplayers()    </span><br><span class="line">c_listallplayers() <span class="comment">--列出所有玩家的用户名和玩家号码</span></span><br><span class="line">c_despawn(AllPlayers[number])<span class="comment">--重新选人</span></span><br><span class="line">c_gatherplayers() </span><br><span class="line">c_goto(AllPlayers[number]) <span class="comment">--传送到指定玩家身边</span></span><br><span class="line">c_move(AllPlayers[number]) <span class="comment">--移动一个玩家，将玩家移动到光标位置</span></span><br><span class="line">    </span><br><span class="line">AllPlayers[number]:PushEvent(<span class="string">'death'</span>) <span class="comment">--杀死一个玩家，杀死玩家</span></span><br><span class="line">AllPlayers[number]:PushEvent(<span class="string">'respawnfromghost'</span>) <span class="comment">--复活的玩家</span></span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(AllPlayers) </span><br><span class="line"><span class="keyword">do</span> </span><br><span class="line">	v:PushEvent(<span class="string">'respawnfromghost'</span>) </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--AllPlayers[number]</span></span><br><span class="line">GetPlayer().components.health:SetMaxHealth(<span class="number">300</span>)  <span class="comment">--最大生命</span></span><br><span class="line">GetPlayer().components.health:StartRegen(<span class="number">30</span>,<span class="number">10</span>) <span class="comment">--自动回血 StopRegen()</span></span><br><span class="line">GetPlayer().components.health.fire_damage_scale=<span class="number">0</span> <span class="comment">--火伤倍率</span></span><br><span class="line">GetPlayer().components.health:SetInvincible(<span class="literal">true</span>) <span class="comment">--health不减</span></span><br><span class="line">GetPlayer().components.hunger:SetPercent(<span class="number">0.5</span>) <span class="comment">--百分比设置 Pause()Resume()</span></span><br><span class="line">GetPlayer().components.hunger:SetMax(<span class="number">500</span>) <span class="comment">--最大饥饿</span></span><br><span class="line">GetPlayer().components.sanity:SetMax(<span class="number">500</span>) <span class="comment">--最大脑子</span></span><br><span class="line">c_maintainhealth(player, percent)<span class="comment">--锁血 hunger sanity temperature moisture。 percent缺省时为1</span></span><br><span class="line">c_maintainall(player)</span><br><span class="line">c_cancelmaintaintasks(player)<span class="comment">--解锁</span></span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(AllPlayers) <span class="keyword">do</span> v.components.health:SetInvincible(<span class="literal">true</span>) <span class="keyword">end</span> <span class="comment">---所有玩家无敌</span></span><br><span class="line">GetPlayer().components.locomotor.runspeed = <span class="number">10</span> <span class="comment">--SpeedMultiplier</span></span><br><span class="line">GetPlayer().components.builder:GiveAllRecipes()</span><br><span class="line">    </span><br><span class="line"><span class="comment">--个人的</span></span><br><span class="line">c_freecrafting()</span><br><span class="line">c_gonext(<span class="string">""</span>)<span class="comment">--pigking/cave_entrance/chester_eyebone/ghost</span></span><br><span class="line">c_give(<span class="string">""</span>,n)</span><br><span class="line">c_spwan(<span class="string">""</span>,n)</span><br><span class="line">c_speedmult(<span class="number">1.5</span>)</span><br><span class="line">c_godmode()</span><br><span class="line">c_supergodmode()  </span><br><span class="line">c_sethealth(n)</span><br><span class="line">c_setsanity(n)</span><br><span class="line">c_sethunger(n)</span><br><span class="line">c_setmoisture(n)<span class="comment">--湿度</span></span><br><span class="line">c_settemperature(n)<span class="comment">--温度</span></span><br><span class="line">c_select() c_sel():Remove()</span><br><span class="line">    </span><br><span class="line"><span class="comment">--unknown</span></span><br><span class="line">c_combatgear() <span class="comment">--作战齿轮？</span></span><br><span class="line">c_combatsimulator(prefab,count)<span class="comment">--作战模拟器？</span></span><br><span class="line">c_makeinvisible()</span><br><span class="line"></span><br><span class="line"><span class="comment">--boss</span></span><br><span class="line">c_summondeerclops()</span><br><span class="line">c_summonbearger() <span class="comment">-- moose dragonfly</span></span><br><span class="line">DebugSpawn<span class="string">"deerclops"</span></span><br><span class="line">   </span><br><span class="line"><span class="comment">--info</span></span><br><span class="line">c_groundtype()</span><br><span class="line">c_dump()</span><br><span class="line">c_dumpseasons()</span><br><span class="line">c_dumpworldstate()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Speed?is?now?"</span>,?TheSim:GetTimeScale())</span><br><span class="line">    </span><br><span class="line"><span class="comment">--生成虫洞</span></span><br><span class="line"><span class="comment">--没有只用一行的命令，请逐步输入</span></span><br><span class="line"><span class="comment">--用这个命令生成虫洞1： worm1 = c_spawn("wormhole")</span></span><br><span class="line"><span class="comment">--用这个命令生成虫洞2： worm2 = c_spawn("wormhole")</span></span><br><span class="line"><span class="comment">--创建虫洞1到虫洞2之间的连接： worm1.components.teleporter.targetTeleporter = worm2</span></span><br><span class="line"><span class="comment">--还有回来的连接： worm2.components.teleporter.targetTeleporter = worm1</span></span><br><span class="line"><span class="comment">--完成！</span></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">minimap = TheSim:FindFirstEntityWithTag(<span class="string">"minimap"</span>)</span><br><span class="line">TheWorld.minimap.MiniMap:ShowArea (<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">10000</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x=<span class="number">-1600</span>,<span class="number">1600</span>,<span class="number">35</span> <span class="keyword">do</span></span><br><span class="line">	<span class="keyword">for</span> y=<span class="number">-1600</span>,<span class="number">1600</span>,<span class="number">35</span> <span class="keyword">do</span></span><br><span class="line">		ThePlayer.player_classified.MapExplorer:RevealArea(x,<span class="number">0</span>,y)</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(AllPlayers) </span><br><span class="line"><span class="keyword">do</span> <span class="keyword">for</span> x=<span class="number">-1600</span>,<span class="number">1600</span>,<span class="number">35</span> </span><br><span class="line">    <span class="keyword">do</span> <span class="keyword">for</span> </span><br><span class="line">        y=<span class="number">-1600</span>,<span class="number">1600</span>,<span class="number">35</span> <span class="keyword">do</span> v.player_classified.MapExplorer:RevealArea(x,<span class="number">0</span>,y) <span class="keyword">end</span> </span><br><span class="line">    <span class="keyword">end</span> </span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p><a href="https://wenku.baidu.com/view/ccd56cfacfc789eb162dc8a3.html?pn=50" target="_blank" rel="noopener">https://wenku.baidu.com/view/ccd56cfacfc789eb162dc8a3.html?pn=50</a></p>
-<p><a href="https://dontstarve.fandom.com/wiki/Console/Don%27t_Starve_Together_Commands" target="_blank" rel="noopener">https://dontstarve.fandom.com/wiki/Console/Don%27t_Starve_Together_Commands</a></p>
+          <h3 id="串行通信"><a href="#串行通信" class="headerlink" title="串行通信"></a>串行通信</h3><p>按照数据传送方向分为：单工、半双工、全双工</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>通信标准</th>
+<th>引脚说明</th>
+<th>通信方式</th>
+<th>通信方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UART</td>
+<td>RXD\TXD\GND</td>
+<td>异步</td>
+<td>全双工</td>
+</tr>
+<tr>
+<td>one-wire</td>
+<td>DQ</td>
+<td>异步</td>
+<td>半双工</td>
+</tr>
+<tr>
+<td>SPI</td>
+<td>SCLK\MISO\MOSI</td>
+<td>同步</td>
+<td>全双工</td>
+</tr>
+<tr>
+<td>I2C</td>
+<td>SCLK\SDA</td>
+<td>同步</td>
+<td>半双工</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>波特率确定，每一位的时间大概确定，再经过停止位的确定，来解析数据</p>
+<p>物理层（电气层：接口决定）：通信接口（RS232,RS485,RS422,TTL)<br>数据格式（数据层：芯片决定）<br>通信协议（协议层：程序决定）</p>
+<p>OVER8 = 0时,</p>
+<script type="math/tex; mode=display">
+USARTDIV = f_{PCLKx}/(bps*16)</script><h4 id="串口字节发送流程"><a href="#串口字节发送流程" class="headerlink" title="串口字节发送流程"></a>串口字节发送流程</h4><p>编程USARTx_CR1的M位来定义字长。<br>编程USARTx_CR2的STOP位来定义停止位位数。<br>编程USARTx_BRR寄存器确定波特率。<br>使能USARTx_CR1的UE位使能USARTx。<br>如果进行多缓冲通信，配置USARTx_CR3的DMA使能（DMAT)。具体请参考后面DMA实验。<br>使能USARTx_CR1的TE位使能发送器。<br>向发送数据寄存器TDR写入要发送的数据（对于M3，发送和接收共用DR寄存器）。<br>向TRD寄存器写入最后一个数据后，等待状态寄存器USARTx_SR(ISR)的TC位置1，传输完成。</p>
+<h4 id="串口发送过程-HAL库）"><a href="#串口发送过程-HAL库）" class="headerlink" title="串口发送过程(HAL库）"></a>串口发送过程(HAL库）</h4><p>初始化串口相关参数，使能串口：HAL_UART_Init();<br>串口相关IO口配置，复用配置：在HAL_UART_MspInit中调用HAL_GPIO_Init函数。<br>发送数据，并等待数据发送完成：HAL_UART_Transmit()函数。</p>
+<h4 id="串口接收流程"><a href="#串口接收流程" class="headerlink" title="串口接收流程"></a>串口接收流程</h4><p>编程USARTx_CR1的M位来定义字长。<br>编程USARTx_CR2的STOP位来定义停止位位数。<br>编程USARTx_BRR寄存器确定波特率。<br>使能USARTx_CR1的UE位使能USARTx。<br>如果进行多缓冲通信，配置USARTx_CR3的DMA使能（DMAT)。具体请参考后面DMA实验。<br>使能USARTx_CR1的RE位为1使能接收器。<br>如果要使能接收中断（接收到数据后产生中断），使能USARTx_CR1的RXNEIE位为1。</p>
+<h4 id="串口接收流程（HAL库）"><a href="#串口接收流程（HAL库）" class="headerlink" title="串口接收流程（HAL库）"></a>串口接收流程（HAL库）</h4><p>初始化串口相关参数，使能串口：HAL_UART_Init();<br>串口相关IO口配置，复用配置：在HAL_UART_MspInit中调用HAL_GPIO_Init函数。<br>串口接收中断优先级配置和使能：HAL_NVIC_EnableIRQ()；HAL_NVIC_SetPriority();<br>使能串口接收中断：HAL_UART_Receive_IT();<br>编写中断服务函数：USARTx_IRQHandler</p>
 
       
     </div>
@@ -344,7 +787,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/01/anaconda/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/02/2020-2-2-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -358,7 +801,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/01/anaconda/" class="post-title-link" itemprop="url">Anaconda3安装及相关问题</a>
+            <a href="/2020/02/02/2020-2-2-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">stm32f4视频学习笔记（二）（源自正点原子）</a>
         </h1>
 
         <div class="post-meta">
@@ -368,14 +811,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-01-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-01T00:00:00+08:00">2020-01-01</time>
+              <time title="Created: 2020-02-02 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-02T00:00:00+08:00">2020-02-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-06 16:47:02" itemprop="dateModified" datetime="2020-01-06T16:47:02+08:00">2020-01-06</time>
+                <time title="Modified: 2020-02-26 14:26:37" itemprop="dateModified" datetime="2020-02-26T14:26:37+08:00">2020-02-26</time>
               </span>
 
           
@@ -389,46 +832,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h3><p><a href="https://repo.continuum.io/archive/" target="_blank" rel="noopener">https://repo.continuum.io/archive/</a></p>
-<p>ubuntu18.04LTS的python默认version是python3.6.8，Anaconda3-5.2.0-Lniux-x86_64.sh就是其对应的anaconda对应的版本</p>
-<h3 id="2-安装"><a href="#2-安装" class="headerlink" title="2.安装"></a>2.安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bash Anaconda3-5.2.0-Linux-x86_64.sh</span><br></pre></td></tr></table></figure>
-<p>改变安装目录</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Anaconda3 will now be installed into this location:</span><br><span class="line">/home/fengshang/anaconda3</span><br></pre></td></tr></table></figure>
-<p>选择是否将anaconda加入环境变量中（这里的局部环境变量，即当前用户，如果要加入全集变量这里选择no ）</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Do you wish the installer to prepend the Anaconda3 install location</span><br><span class="line">to PATH <span class="keyword">in</span> your /home/fengshang/.bashrc ? [yes|no]</span><br><span class="line">[no] &gt;&gt;&gt; yes</span><br></pre></td></tr></table></figure>
-<p>安装完毕后，无论是将环境边界配置在bashrc中还是全局变量/etc/prifile中，都需要对其进行souce操作。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">source</span> /home/fengshang/.bashrc</span><br></pre></td></tr></table></figure>
-<h3 id="3-使用"><a href="#3-使用" class="headerlink" title="3.使用"></a>3.使用</h3><p>环境相关</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ conda create -n 新建虚拟环境的名字 python=对应的版本号</span><br><span class="line">$ <span class="built_in">source</span> activate 虚拟环境的名字</span><br><span class="line">$ <span class="built_in">source</span> deactivate 虚拟环境的名字</span><br><span class="line">$ conda create --name [虚拟环境名] -- <span class="built_in">clone</span> [colne的环境]</span><br><span class="line">$ conda remove --name [虚拟环境名] -all //删除learn环境及下属所有包</span><br><span class="line"></span><br><span class="line">$ conda env list //列出conda管理的所有环境</span><br><span class="line">$ conda env <span class="built_in">export</span> &gt; environment.yaml //将包信息存入yaml文件中</span><br><span class="line">$ conda env create -f environment.yaml //当需要重新创建一个相同的虚拟环境时可以用</span><br></pre></td></tr></table></figure>
-<p>包相关</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ conda install 包的名字 如tensorflow opencv（cv2） matplotlib</span><br><span class="line">$ conda remove 包的名字  </span><br><span class="line">$ conda update 包的名字  </span><br><span class="line">$ conda list //列出当前环境的所有包</span><br><span class="line">$ conda update -n base conda</span><br></pre></td></tr></table></figure>
-<p>安装tensorflow</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ conda install nb_conda 可切换虚拟环境</span><br><span class="line">$ conda install tensorflow</span><br></pre></td></tr></table></figure>
-<p>查看tensorflow版本（注意：两根下划线）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">print(tf.__version__)</span><br></pre></td></tr></table></figure>
-<h3 id="4-Jupyter"><a href="#4-Jupyter" class="headerlink" title="4.Jupyter"></a>4.Jupyter</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ jupyter notebook --generate-config</span><br><span class="line">Writing default config to: /home/fengshang/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
-<p>修改配置文件<strong>jupyter_notebook_config.py</strong>，修改启动时打开的路径</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c.NotebookApp.notebook_dir = <span class="string">'路径'</span></span><br></pre></td></tr></table></figure>
-<p>Jupyter启动</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ juypter notebook    <span class="comment"># 默认端口启动，8888</span></span><br><span class="line">$ jupyter notebook --port &lt;port number&gt;   <span class="comment"># 指定端口启动</span></span><br><span class="line">$ jupyter notebook --no-browser   <span class="comment"># 启动服务器但不在浏览器中打开</span></span><br></pre></td></tr></table></figure>
-<h3 id="5-相关问题"><a href="#5-相关问题" class="headerlink" title="5.相关问题"></a>5.相关问题</h3><p>Q：执行<strong>conda create -n 环境的名字 python=版本号</strong>时，出现CondaHTTPError: HTTP 000 CONNECTION FAILED for url <a href="https://repo.anaconda.com/pkgs/r/linux-64/repodata.json.bz2" target="_blank" rel="noopener">https://repo.anaconda.com/pkgs/r/linux-64/repodata.json.bz2</a></p>
-<p>A：更新conda……直接翻墙解决或者更换源</p>
-<p>更新了好久才发现虚拟机没有共享到主机的网络，没翻墙，难怪下包下得那么慢……</p>
-<p>so研究了一下虚拟机如何共享主机网络</p>
-<h4 id="1-开启网络共享"><a href="#1-开启网络共享" class="headerlink" title="1.开启网络共享"></a>1.开启网络共享</h4><p><strong>控制面板\所有控制面板项\网络连接</strong>里将WLAN的共享打开</p>
-<h4 id="2-主机打开cmd获取ip"><a href="#2-主机打开cmd获取ip" class="headerlink" title="2.主机打开cmd获取ip"></a>2.主机打开cmd获取ip</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipconfig</span><br></pre></td></tr></table></figure>
-<h4 id="3-shadowsocks"><a href="#3-shadowsocks" class="headerlink" title="3.shadowsocks"></a>3.shadowsocks</h4><p>主机的ss设置成允许其他设备接入</p>
-<h4 id="4-虚拟机"><a href="#4-虚拟机" class="headerlink" title="4.虚拟机"></a>4.虚拟机</h4><p>网络设置里将主机的IP复制过来，端口为1080，浏览器设置成使用本地代理</p>
-<p>Q:由于更新了python版本，导致conda无法使用</p>
-<p>A:因为安装jupyter时自动更新了python版本3.6—&gt;3.7，导致conda无法使用。发现并不需要再安装jupyter，系统已有……</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python3 -m pip install --upgrade pip</span><br><span class="line">$ python3 -m pip install jupyter</span><br></pre></td></tr></table></figure>
-<p><a href="https://stackoverflow.com/questions/54546450/how-does-using-conda-to-install-a-package-change-my-python-version-and-remove-co" target="_blank" rel="noopener">https://stackoverflow.com/questions/54546450/how-does-using-conda-to-install-a-package-change-my-python-version-and-remove-co</a></p>
-<p><a href="https://blog.csdn.net/Code_7900x/article/details/84891833" target="_blank" rel="noopener">https://blog.csdn.net/Code_7900x/article/details/84891833</a></p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[1]<a href="https://blog.csdn.net/Lucky_yw/article/details/89387073" target="_blank" rel="noopener">https://blog.csdn.net/Lucky_yw/article/details/89387073</a></p>
-<p>[2]<a href="https://blog.csdn.net/weixin_41366941/article/details/90549191" target="_blank" rel="noopener">https://blog.csdn.net/weixin_41366941/article/details/90549191</a></p>
-<p>[3]<a href="https://mp.weixin.qq.com/s?src=11&amp;timestamp=1577873187&amp;ver=2070&amp;signature=QQPW*kOKH-zI9m1PSo*6x*ZzikP7730A*B*iTAcexL4oJeOrvcSOiXr*vNtz8kgbCHxcz646uxMTN9OKuX6oOOFR3saFfIReFlLSHbTNK4m6sDhA9LcP3rOTE0qZzQt5&amp;new=1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?src=11&amp;timestamp=1577873187&amp;ver=2070&amp;signature=QQPW*kOKH-zI9m1PSo*6x*ZzikP7730A*B*iTAcexL4oJeOrvcSOiXr*vNtz8kgbCHxcz646uxMTN9OKuX6oOOFR3saFfIReFlLSHbTNK4m6sDhA9LcP3rOTE0qZzQt5&amp;new=1</a></p>
-<p>[4]<a href="http://scarhett.com/index.php/2018/04/18/01/" target="_blank" rel="noopener">http://scarhett.com/index.php/2018/04/18/01/</a></p>
-<p>[5]<a href="https://www.jianshu.com/p/918e517b142f?from=timeline" target="_blank" rel="noopener">https://www.jianshu.com/p/918e517b142f?from=timeline</a></p>
+          <h3 id="固件库和寄存器"><a href="#固件库和寄存器" class="headerlink" title="固件库和寄存器"></a>固件库和寄存器</h3><p>hal库和std库都是固件库，区别于寄存器版本</p>
+<p>固件库就相当于API，将对寄存器的操作封装为函数，节省开发时间</p>
+<p>HAL库优点：便于移植</p>
+<h3 id="GPIO"><a href="#GPIO" class="headerlink" title="GPIO"></a>GPIO</h3><p>全称：general purpose input output 通用输入输出端口</p>
+<p>PA~PH每组16个IO，PI只有12个IO。</p>
+<p>上电复位后，GPIO默认为输入浮空状态，部分特殊引脚为特定状态。如：复位后，调试引脚处于复用功能上拉/下拉状态。</p>
+<p>BSRR寄存器直接写，而ODR寄存器需要先读再写，但BSRR最后还是通过ODR寄存器控制的。</p>
+<p>推挽输出可以输出强高低电平，而开漏输出只能输出强低电平，高电平要靠外部上拉。</p>
+<h4 id="配置HAL库操作IO口步骤："><a href="#配置HAL库操作IO口步骤：" class="headerlink" title="配置HAL库操作IO口步骤："></a>配置HAL库操作IO口步骤：</h4><p>初始化HAL库：HAL_Init();<br>初始化系统时钟 ：Stm32_Clock_Init( );<br>使能IO口时钟：__HAL_RCC_GPIOB_CLK_ENABLE();<br>初始化IO口模式：HAL_GPIO_Init()；<br>操作IO口，输出高低电平：HAL_GPIO_WritePin();</p>
+<p>位带操作直接写内存，正点写的sys文件里的操作。hal库里不怎么用位操作。</p>
+<h3 id="常用C语言知识复习"><a href="#常用C语言知识复习" class="headerlink" title="常用C语言知识复习"></a>常用C语言知识复习</h3><p>1、位操作：&amp; 与；| 或；~ 非；^ 亦或；&lt;&lt; 左移；&gt;&gt; 右移</p>
+<p>2、define宏定义：#define A B</p>
+<p>3、ifdef条件编译：#ifdef #else #endif</p>
+<p>4、typedef类型别名：typedef unsigned char uint8_t</p>
+<p>5、extern：可多次声明，但只定义一次</p>
+<p>6、static：静态存储区，作用域仅限于当前.c文件</p>
+<p>7、__weak弱函数：相当于c++的虚函数。注意点：weak函数和重写函数不能放在同一文件。避免重复定义。</p>
+<p>8、结构体struct；优点是可扩展性强。</p>
+<h3 id="时钟系统"><a href="#时钟系统" class="headerlink" title="时钟系统"></a>时钟系统</h3><p>5个时钟源：HSI、HSE、LSI、LSE、PLL</p>
+<p>LSI主要给看门狗用。LSE外接32.768Khz石英晶体，供RTC用。</p>
+<p>STM32F4时钟信号输出MCO1（PA8）和MCO2(PC9)，MCO最大输出时钟不超过100MHz</p>
+<p>视频24要回顾，涉及到系统最大频率需要调用的几个函数。</p>
+<h3 id="Systick定时器"><a href="#Systick定时器" class="headerlink" title="Systick定时器"></a>Systick定时器</h3><p>系统滴答定时器，一个24位的倒计时定时器，计到0时，从RELOAD寄存器自动重装载定时初值。只要不把它在systick控制及状态寄存器中的使能位清除，就永不停息，即使是在睡眠模式下也能工作。</p>
+<p>systick定时器被捆绑在NVIC中，用于产生SYSTICK异常（异常号：15）</p>
+<p>systick中断的优先级也可以设置。</p>
+<p>systick具体怎么用？</p>
+<h3 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h3><p>CM4/CM7 内核支持256个中断，其中包含了16个内核中断和240个外部中断，并且具有256级的可编程中断设置。<br>STM32F42xx/STM32F43xx则总共有97个中断。10个内核中断，87个可屏蔽中断。 </p>
+<p>STM32具有16级可编程的中断优先级。</p>
+<p>4位可给抢占和响应分配。</p>
+<h4 id="抢占优先级-amp-响应优先级区别："><a href="#抢占优先级-amp-响应优先级区别：" class="headerlink" title="抢占优先级 &amp; 响应优先级区别："></a>抢占优先级 &amp; 响应优先级区别：</h4><p>高优先级的抢占优先级是可以打断正在进行的低抢占优先级中断的。<br>抢占优先级相同的中断，高响应优先级不可以打断低响应优先级的中断。<br>抢占优先级相同的中断，当两个中断同时发生的情况下，哪个响应优先级高，哪个先执行。<br>如果两个中断的抢占优先级和响应优先级都是一样的话，则看哪个中断先发生就先执行；</p>
+<p>值越小，优先级越高。</p>
 
       
     </div>
@@ -448,7 +882,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/01/linux-command/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/01/2020-2-1-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -462,7 +896,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/01/linux-command/" class="post-title-link" itemprop="url">Linux Command</a>
+            <a href="/2020/02/01/2020-2-1-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" class="post-title-link" itemprop="url">stm32f4视频学习笔记（一）（源自正点原子）</a>
         </h1>
 
         <div class="post-meta">
@@ -472,14 +906,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-01-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-01T00:00:00+08:00">2020-01-01</time>
+              <time title="Created: 2020-02-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-01T00:00:00+08:00">2020-02-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-11 19:37:08" itemprop="dateModified" datetime="2020-01-11T19:37:08+08:00">2020-01-11</time>
+                <time title="Modified: 2020-02-26 14:26:26" itemprop="dateModified" datetime="2020-02-26T14:26:26+08:00">2020-02-26</time>
               </span>
 
           
@@ -493,19 +927,61 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>新建文件夹</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir filename</span><br></pre></td></tr></table></figure>
-<p>查找文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ find &lt;指定目录&gt; &lt;指定条件&gt; &lt;指定动作&gt;</span><br><span class="line">$ find / -name  <span class="string">'interfaces'</span></span><br></pre></td></tr></table></figure>
-<p>删除文件/目录</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rm -rf 目录 删除文件夹 -r 向下递归</span><br><span class="line">$ rm -f 文件 删除文件 -f 直接强行删除</span><br></pre></td></tr></table></figure>
-<p>其他文件相关</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ mv a b //重命名</span><br><span class="line">$ top -i //忽略idle进程</span><br><span class="line">$ file filename //查看文件属性</span><br><span class="line">$ <span class="built_in">stat</span> filename //查看文件属性</span><br><span class="line">$ ls -l //查看文件属性</span><br><span class="line">$ touch //新建</span><br><span class="line">$ cat filename //第一行开始显示</span><br><span class="line">$ more filename</span><br><span class="line">$ less filename</span><br></pre></td></tr></table></figure>
-<p>vim-gtk调用了gtk图形界面，vim只有命令行界面，个人感觉没区别</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install vim-gtk</span><br></pre></td></tr></table></figure>
-<p>在jupyter下的File—&gt;Download as —&gt;python(.py)可以将.ipynb转化为.py文件。</p>
-<p>git指令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br><span class="line">$ git <span class="built_in">clone</span> </span><br><span class="line">$ git remote add origin git  “项目地址”</span><br><span class="line">$ git add -A</span><br><span class="line">$ git commit -m “<span class="string">"</span></span><br><span class="line"><span class="string">$ git push -u origin master</span></span><br></pre></td></tr></table></figure>
+          <p>学习网站：</p>
+<p>www.openedv.com</p>
+<p>www.stmcu.org</p>
+<p>参考资料</p>
+<p>最底层（了解）：CM3权威指南/CM4权威指南（ARM提供）</p>
+<p>芯片参考手册（了解）：STM32F4xx中文参考手册（ST提供）</p>
+<p>芯片数据手册（了解）：STM32F103xCDE_DS_CH_V5.pdf（芯片电气参数，引脚说明）</p>
+<p>官方其他资源和教程（了解）：固体库包（含参考源码） www.stmcu.org</p>
+<p>特定开发板学习教程（手册，视频，源码）（理解）</p>
+<p>最小系统</p>
+<p>供电电路</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">典型值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">VDD数字电源</td>
+<td style="text-align:center">+3.3V</td>
+</tr>
+<tr>
+<td style="text-align:center">VSS数字地</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">VDDA模拟电源</td>
+<td style="text-align:center">+3.3V</td>
+</tr>
+<tr>
+<td style="text-align:center">VSSA模拟地</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>dianVDD和VDDA之间一般接一个简单的低通滤波器（RC，Π型）</p>
+<p>模拟电源和模拟地之间为什么要加滤波</p>
+<p>步骤：</p>
+<p>1、找出所有VSS VDD VSSA VDDA</p>
+<p>2、确定电源输出输入电压范围，设计稳压电路 如用AMS1117-3.3</p>
+<p>3、模拟电源和数字电源之间加一个低通滤波器</p>
+<p>复位电路</p>
+<p>时钟电路（外部晶振）</p>
+<p>高速时钟25Mhz</p>
+<p>低速时钟32.768Khz</p>
+<p>Boot启动模式选择</p>
+<p>下载电路（串口/JTAG/SWD）</p>
+<p>SWD全称</p>
+<p>后备电池</p>
+<p>后备区供电</p>
+<p>F4是ARMv7-ME架构，Cortex-M4内核</p>
 
       
     </div>
@@ -525,7 +1001,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/31/altium_designer/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/19/2020-1-19-python/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -539,7 +1015,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/12/31/altium_designer/" class="post-title-link" itemprop="url">Altium Designer19</a>
+            <a href="/2020/01/19/2020-1-19-python/" class="post-title-link" itemprop="url">python</a>
         </h1>
 
         <div class="post-meta">
@@ -550,7 +1026,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2019-12-31 00:00:00 / Modified: 19:58:30" itemprop="dateCreated datePublished" datetime="2019-12-31T00:00:00+08:00">2019-12-31</time>
+              <time title="Created: 2020-01-19 00:00:00 / Modified: 10:17:52" itemprop="dateCreated datePublished" datetime="2020-01-19T00:00:00+08:00">2020-01-19</time>
             </span>
 
           
@@ -564,386 +1040,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="破解及汉化"><a href="#破解及汉化" class="headerlink" title="破解及汉化"></a>破解及汉化</h3><p>1.将 <strong>shfolder.dll</strong>复制到AD目录下</p>
-<p>2.打开AD，在<strong>licenses manager</strong>里导入 <strong>.alf</strong>  文件即可破解 </p>
-<p>3.点击右上角齿轮标志，在<strong>System</strong>中找到<strong>General</strong>，勾选<strong>Localization</strong>选项，重启</p>
-<h3 id="元件库"><a href="#元件库" class="headerlink" title="元件库"></a>元件库</h3><h4 id="已有元件库"><a href="#已有元件库" class="headerlink" title="已有元件库"></a>已有元件库</h4><p>1.下载元件库<a href="https://designcontent.live.altium.com/#UnifiedComponents" target="_blank" rel="noopener">https://designcontent.live.altium.com/#UnifiedComponents</a></p>
-<p>2.点击右上角齿轮标志，在<strong>Data Management</strong>中找到<strong>File-based Libraries</strong>导入已有元件库</p>
-<h3 id="其他设置"><a href="#其他设置" class="headerlink" title="其他设置"></a>其他设置</h3><h4 id="四层PCB"><a href="#四层PCB" class="headerlink" title="四层PCB"></a>四层PCB</h4><p>1.建立PCB文件</p>
-<p>2.选择<strong>Designe –&gt; Layer Stack Manger</strong>（设计 –&gt; 层叠管理器）</p>
-<p>3.右键<strong>Top Layer</strong>，insert layer below</p>
-<h4 id="原理图修改纸张大小"><a href="#原理图修改纸张大小" class="headerlink" title="原理图修改纸张大小"></a>原理图修改纸张大小</h4><p>右键，选择<strong>原理图优先选项</strong>，在<strong>General</strong>中修改图纸尺寸</p>
-<h4 id="元器件自动编号"><a href="#元器件自动编号" class="headerlink" title="元器件自动编号"></a>元器件自动编号</h4><p><strong>工具–&gt;标注–&gt;原理图标注</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/31/raspberry%20pi4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="施少峰">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="施少峰的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/31/raspberry%20pi4/" class="post-title-link" itemprop="url">Raspberry Pi4</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2019-12-31 00:00:00 / Modified: 19:56:41" itemprop="dateCreated datePublished" datetime="2019-12-31T00:00:00+08:00">2019-12-31</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="第一次启动"><a href="#第一次启动" class="headerlink" title="第一次启动"></a>第一次启动</h3><h4 id="1-自动连接wifi"><a href="#1-自动连接wifi" class="headerlink" title="1.自动连接wifi"></a>1.自动连接wifi</h4><p>在boot文件夹下新建文件ssh和wpa_supplicant.conf</p>
-<p>wpa_supplicant.conf文件内容如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ctrl_interface=DIR=/var/<span class="built_in">run</span>/wpa_supplicant GROUP=netdev</span><br><span class="line">update_config=<span class="number">1</span></span><br><span class="line">country=CN</span><br><span class="line">network=&#123;</span><br><span class="line">	ssid=<span class="string">"name"</span></span><br><span class="line">	psk=<span class="string">"key"</span></span><br><span class="line">	priority=<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-开启VNC和desktop"><a href="#2-开启VNC和desktop" class="headerlink" title="2.开启VNC和desktop"></a>2.开启VNC和desktop</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo raspi-config</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-安装vim"><a href="#3-安装vim" class="headerlink" title="3.安装vim"></a>3.安装vim</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get remove vim-common </span><br><span class="line">$ sudo apt-get install vim</span><br></pre></td></tr></table></figure>
-
-<p>wpa_supplicant.conf文件在/etc/wpa_supplicant/下</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/30/machine%20learning_1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="施少峰">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="施少峰的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/30/machine%20learning_1/" class="post-title-link" itemprop="url">Notes for machine learning 1</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-12-30 21:25:00" itemprop="dateCreated datePublished" datetime="2019-12-30T21:25:00+08:00">2019-12-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-07 12:41:20" itemprop="dateModified" datetime="2020-01-07T12:41:20+08:00">2020-01-07</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Supervised-learning"><a href="#Supervised-learning" class="headerlink" title="Supervised learning"></a>Supervised learning</h3><p>“right answers”given</p>
-<p>E.g. </p>
-<p>​    Regression - predict continuous valued output(price)</p>
-<p>​     Classification - Discrete valued output(0 or 1)</p>
-<h4 id="1-Linear-regression"><a href="#1-Linear-regression" class="headerlink" title="1. Linear regression"></a>1. Linear regression</h4><script type="math/tex; mode=display">
-J(\theta)=\frac{1}{2m}\sum_{i=1}^{m}(h_\theta(x_i)-y_i)^2</script><h5 id="1-Gradient-Descent梯度下降法："><a href="#1-Gradient-Descent梯度下降法：" class="headerlink" title="(1)Gradient Descent梯度下降法："></a>(1)Gradient Descent梯度下降法：</h5><p>repeat until convergence:{</p>
-<script type="math/tex; mode=display">
-\theta_j:=\theta_j-\alpha\frac{1}{m}\sum_{i=1}^{m}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}  \quad \quad\quad for \quad j:=0...n</script><p>}</p>
-<p>多元运用梯度下降法时，要把不同的特征值分别归一化，同数量级</p>
-<p>可以适当合并特征：长宽相乘得面积等</p>
-<p>α取值0.001，0.01，0.1，1试值，观察min{J(θ)}是否递减、递减的速度来判断α是否合适</p>
-<p>Polynomial regression：一个特征值平方，立方，开方等运算，形成新的特征值</p>
-<h5 id="2-Normal-Equation正规方程法"><a href="#2-Normal-Equation正规方程法" class="headerlink" title="(2)Normal  Equation正规方程法"></a>(2)Normal  Equation正规方程法</h5><script type="math/tex; mode=display">
-θ=(X^{T}X)^{-1} X^{T}y</script><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pinv(X&#39;*X)*X&#39;*y</span><br></pre></td></tr></table></figure>
-<p>不需要归一化</p>
-<p>矩阵如果不可逆，删除相似特征</p>
-<h5 id="3-Summary"><a href="#3-Summary" class="headerlink" title="(3)Summary"></a>(3)Summary</h5><p>n小，选择normal equation；n大，选择gradient descent。Andrew Ng的临界数值是10000。</p>
-<h4 id="2-Logistic-Regression-for-classification"><a href="#2-Logistic-Regression-for-classification" class="headerlink" title="2. Logistic Regression(for classification)"></a>2. Logistic Regression(for classification)</h4><script type="math/tex; mode=display">
-h_\theta(x)=\frac{1}{1+e^{-\theta^Tx}}\quad \quad \quad 0<h_\theta(x)<1</script><script type="math/tex; mode=display">
-找\theta^Tx的包围区域函数，使整体分割为0和1两部分</script><script type="math/tex; mode=display">
-Cost(h_\theta(x),y)=-ylog(h_\theta(x))-(1-y)log(1-h_\theta(x))</script><script type="math/tex; mode=display">
-J(\theta)=\frac{1}{m}\sum_{i=1}^{m}Cost(h_\theta(x^{(i)}),y^{(i)})</script><h5 id="1-Gradient-Descent梯度下降法：-1"><a href="#1-Gradient-Descent梯度下降法：-1" class="headerlink" title="(1)Gradient Descent梯度下降法："></a>(1)Gradient Descent梯度下降法：</h5><p>repeat {</p>
-<script type="math/tex; mode=display">
-\theta_j:=\theta_j-\alpha\frac{\partial}{\partial\theta_j}J(\theta)
-=\theta_j-\alpha\sum_{i=1}^{m}(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}</script><p>}</p>
-<h5 id="2-Conjugate-gradient、BFGS、L-BFGS"><a href="#2-Conjugate-gradient、BFGS、L-BFGS" class="headerlink" title="(2)Conjugate gradient、BFGS、L-BFGS"></a>(2)Conjugate gradient、BFGS、L-BFGS</h5><h5 id="3-MultiClass-Classification"><a href="#3-MultiClass-Classification" class="headerlink" title="(3)MultiClass Classification"></a>(3)MultiClass Classification</h5><p>当分类结果不只两个时，分割，多条曲线寻找</p>
-<script type="math/tex; mode=display">
-max\quad{h_\theta^{(i)}(x)}</script><h4 id="3-Regularization"><a href="#3-Regularization" class="headerlink" title="3. Regularization"></a>3. Regularization</h4><script type="math/tex; mode=display">
-J(\theta)=\frac{1}{2m}[\sum_{i=1}^{m}(h_\theta(x_i)-y_i)^2+\lambda\sum_{j=1}^{n}\theta_j^2]</script><script type="math/tex; mode=display">
-J(\theta)=-\frac{1}{m}[\sum_{i=1}^{m}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))]+\frac{\lambda}{2m}\sum_{j=1}^{n}\theta_j^2</script><h3 id="Unsupervised-learning"><a href="#Unsupervised-learning" class="headerlink" title="Unsupervised learning"></a>Unsupervised learning</h3><h3 id="Program-environment"><a href="#Program-environment" class="headerlink" title="Program environment"></a>Program environment</h3><p>Octave or matlab</p>
-<h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p>梯度下降法和多元极值和点估计的关系？</p>
-<p>一个是如何列出方程（最小二乘、极大似然），一个是如何解方程（梯度下降），其实是求最小值</p>
-<p><a href="https://www.zhihu.com/question/24900876" target="_blank" rel="noopener">https://www.zhihu.com/question/24900876</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/30/stm32/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="施少峰">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="施少峰的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/30/stm32/" class="post-title-link" itemprop="url">STM32Cube及MDK相关流程</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-12-30 21:19:00" itemprop="dateCreated datePublished" datetime="2019-12-30T21:19:00+08:00">2019-12-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-12-31 20:15:32" itemprop="dateModified" datetime="2019-12-31T20:15:32+08:00">2019-12-31</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-安装mdk"><a href="#1-安装mdk" class="headerlink" title="1.安装mdk"></a>1.安装mdk</h3><h4 id="1-1安装对应芯片的pack"><a href="#1-1安装对应芯片的pack" class="headerlink" title="1.1安装对应芯片的pack"></a>1.1安装对应芯片的pack</h4><p><a href="http://www.keil.com/dd2/pack/" target="_blank" rel="noopener">http://www.keil.com/dd2/Pack/</a></p>
-<h3 id="2-安装32cube"><a href="#2-安装32cube" class="headerlink" title="2.安装32cube"></a>2.安装32cube</h3><h4 id="2-1安装JRE"><a href="#2-1安装JRE" class="headerlink" title="2.1安装JRE"></a>2.1安装JRE</h4><h4 id="2-2安装cube"><a href="#2-2安装cube" class="headerlink" title="2.2安装cube"></a>2.2安装cube</h4><h4 id="2-3安装库"><a href="#2-3安装库" class="headerlink" title="2.3安装库"></a>2.3安装库</h4><h3 id="3-安装X-CUBE-MCSDK"><a href="#3-安装X-CUBE-MCSDK" class="headerlink" title="3.安装X-CUBE-MCSDK"></a>3.安装X-CUBE-MCSDK</h3><p>Tips:</p>
-<p>1.安装cube和库完毕，新建工程时会下载mcusfeaturesAndDescription.json失败，cancel不影响，一些联网数据无法获取罢了<br>2.MDK要破解一下</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/30/ubuntu-problems/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="施少峰">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="施少峰的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/30/ubuntu-problems/" class="post-title-link" itemprop="url">Unbuntu problems</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2019-12-30 21:07:00 / Modified: 21:17:05" itemprop="dateCreated datePublished" datetime="2019-12-30T21:07:00+08:00">2019-12-30</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Problem-1"><a href="#Problem-1" class="headerlink" title="Problem 1"></a>Problem 1</h3><p>Q:虚拟机中系统未铺满屏幕<br>A:下载vm tools，若管理里面安装按键为灰色，设置自动读取硬盘和软盘即可</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/29/blog_build/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="施少峰">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="施少峰的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/29/blog_build/" class="post-title-link" itemprop="url">搭建blog</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-12-29 00:00:00" itemprop="dateCreated datePublished" datetime="2019-12-29T00:00:00+08:00">2019-12-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-06 17:36:23" itemprop="dateModified" datetime="2020-01-06T17:36:23+08:00">2020-01-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>基于github与hexo的个人博客搭建</p>
-<h3 id="1-建立本地与github服务器连接"><a href="#1-建立本地与github服务器连接" class="headerlink" title="1.建立本地与github服务器连接"></a>1.建立本地与github服务器连接</h3><p>安装git</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install git</span><br></pre></td></tr></table></figure>
-<p>设置用户信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name <span class="string">"*"</span> //输入注册时的username</span><br><span class="line">$ git config --global user.email  <span class="string">"*@*"</span> //填写注册邮箱</span><br><span class="line">$ git config --global --list //查看配置</span><br></pre></td></tr></table></figure>
-<p>生成ssh key</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">"邮件地址@youremail.com"</span></span><br></pre></td></tr></table></figure>
-<p>在本地文件夹找到id_rsa.pub文件，全部内容复制，添加SSH Key到GitHub上</p>
-<p>测试与github服务器连接</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br></pre></td></tr></table></figure>
-<h3 id="2-搭建hexo"><a href="#2-搭建hexo" class="headerlink" title="2.搭建hexo"></a>2.搭建hexo</h3><p>换源并安装hexo</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo</span><br></pre></td></tr></table></figure>
-<p>在网站目录下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init</span><br><span class="line">$ npm install</span><br><span class="line">$ npm install hexo-deployer-git --save</span><br><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br><span class="line">$ hexo g //generate</span><br><span class="line">$ hexo s //server</span><br><span class="line">$ hexo d //deploy</span><br></pre></td></tr></table></figure>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://codewithzhangyi.com/research/" target="_blank" rel="noopener">http://codewithzhangyi.com/research/</a></p>
+          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> argvv</span><br><span class="line"></span><br><span class="line">script, user_name = argv</span><br><span class="line">prompt = <span class="string">'&gt;'</span></span><br><span class="line"></span><br><span class="line">test = rawinput(prompt)</span><br><span class="line">print(test)</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -962,6 +1059,9 @@ J(\theta)=-\frac{1}{m}[\sum_{i=1}^{m}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})lo
   </div>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 
@@ -1026,14 +1126,14 @@ J(\theta)=-\frac{1}{m}[\sum_{i=1}^{m}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})lo
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1143,54 +1243,6 @@ J(\theta)=-\frac{1}{m}[\sum_{i=1}^{m}y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})lo
   
 
   
-      
-<script type="text/x-mathjax-config">
-
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-      equationNumbers: {
-        autoNumber: 'AMS'
-      }
-    }
-  });
-
-  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
-    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
-      if (data.display) {
-        var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') {
-          next = next.nextSibling;
-        }
-        if (next && next.nodeName.toLowerCase() === 'br') {
-          next.parentNode.removeChild(next);
-        }
-      }
-    });
-  });
-
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for (i = 0; i < all.length; i += 1) {
-      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
-      if (element.nodeName.toLowerCase() == 'li') {
-        element = element.parentNode;
-      }
-      element.classList.add('has-jax');
-    }
-  });
-</script>
-<script>
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
-    MathJax.Hub.Typeset();
-  }, window.MathJax);
-</script>
-
-    
 
   
 

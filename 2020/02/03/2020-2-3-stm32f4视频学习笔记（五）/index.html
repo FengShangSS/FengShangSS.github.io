@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="看门狗用于监测单片机程序运行状态的模块或者芯片，俗称“看门狗”(watchdog) 。 STM32内置两个看门狗：独立看门狗和窗口看门狗。 两个看门狗设备（独立看门狗&#x2F;窗口看门狗)可以用来检测和 解决由软件错误引起的故障。当计数器达到给定的超时值时，触发一个中断（仅适用窗口看门狗）或者产生系统复位。 两个看门狗的区别独立看门狗（IWDG)由专用的低速时钟（LSI)驱动，即使主时钟发生故障它仍有效。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="stm32f4视频学习笔记（五）（源自正点原子）">
+<meta property="og:url" content="http://yoursite.com/2020/02/03/2020-2-3-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/index.html">
+<meta property="og:site_name" content="施少峰的博客">
+<meta property="og:description" content="看门狗用于监测单片机程序运行状态的模块或者芯片，俗称“看门狗”(watchdog) 。 STM32内置两个看门狗：独立看门狗和窗口看门狗。 两个看门狗设备（独立看门狗&#x2F;窗口看门狗)可以用来检测和 解决由软件错误引起的故障。当计数器达到给定的超时值时，触发一个中断（仅适用窗口看门狗）或者产生系统复位。 两个看门狗的区别独立看门狗（IWDG)由专用的低速时钟（LSI)驱动，即使主时钟发生故障它仍有效。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20200203101005612.png">
+<meta property="article:published_time" content="2020-02-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-02-26T06:26:52.710Z">
+<meta property="article:author" content="施少峰">
+<meta property="article:tag" content="stm32">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20200203101005612.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/02/03/2020-2-3-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>stm32f4视频学习笔记（五）（源自正点原子） | 施少峰的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">施少峰的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">ShiShaoFeng's blog</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/03/2020-2-3-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="施少峰">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="施少峰的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          stm32f4视频学习笔记（五）（源自正点原子）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-03T00:00:00+08:00">2020-02-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-26 14:26:52" itemprop="dateModified" datetime="2020-02-26T14:26:52+08:00">2020-02-26</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="看门狗"><a href="#看门狗" class="headerlink" title="看门狗"></a>看门狗</h3><p>用于监测单片机程序运行状态的模块或者芯片，俗称“看门狗”(watchdog) 。</p>
+<p>STM32内置两个看门狗：独立看门狗和窗口看门狗。</p>
+<p>两个看门狗设备（独立看门狗/窗口看门狗)可以用来检测和 解决由软件错误引起的故障。当计数器达到给定的超时值时，触发一个中断（仅适用窗口看门狗）或者产生系统复位。</p>
+<h4 id="两个看门狗的区别"><a href="#两个看门狗的区别" class="headerlink" title="两个看门狗的区别"></a>两个看门狗的区别</h4><p>独立看门狗（IWDG)由专用的低速时钟（LSI)驱动，即使主时钟发生故障它仍有效。<br>独立看门狗适合应用于需要看门狗作为一个在主程序之外 能够完全独立工作，并且对时间精度要求低的场合。<br>窗口看门狗由从APB1时钟分频后得到时钟驱动。通过可配置的时间窗口来检测应用程序非正常的过迟或过早操作。<br>窗口看门狗最适合那些要求看门狗在精确计时窗口起作用的程序。</p>
+<h3 id="IWDG"><a href="#IWDG" class="headerlink" title="IWDG"></a>IWDG</h3><p>独立看门狗限制喂狗时间在0-x内，x由相关寄存器决定。喂狗的时间不能过晚。</p>
+<h4 id="独立看门狗工作原理描述"><a href="#独立看门狗工作原理描述" class="headerlink" title="独立看门狗工作原理描述"></a>独立看门狗工作原理描述</h4><p>在键值寄存器（IWDG_KR)中写入0xCCCC，开始启用独立看门狗。此时计数器开始从其复位值0xFFF递减，当计数器值计数到尾值0x000时会产生一个复位信号（IWDG_RESET)。<br>无论何时，只要在键值寄存器IWDG_KR中写入0xAAAA（通常说的喂狗）, 自动重装载寄存器IWDG_RLR的值就会重新加载到计数器，从而避免看门狗复位。<br>如果程序异常，就无法正常喂狗，从而系统复位。</p>
+<p>溢出时间计算：Tout=((4×2^prer) ×rlr) /32 （M4)</p>
+<p>时钟频率LSI=32K， 一个看门狗时钟周期就是最短超时时间。<br>最长超时时间= (IWDG_RLR寄存器最大值）X看门狗时钟周期</p>
+<p>重装载值最大为4095。因为只有12位。</p>
+<h4 id="独立看门狗操作步骤"><a href="#独立看门狗操作步骤" class="headerlink" title="独立看门狗操作步骤"></a>独立看门狗操作步骤</h4><p>初始化看门狗：预分频系数，重装载值。HAL_IWDG_Init(); 该函数在操作PR和RLR寄存器之前会取消写保护。<br>启动看门狗：HAL_IWDG_Start();<br>喂狗：HAL_IWDG_Refresh();</p>
+<h3 id="WWDG"><a href="#WWDG" class="headerlink" title="WWDG"></a>WWDG</h3><p>称为窗口就是因为其喂狗时间是一个有上下限的范围内(窗口），你可以通过设定相关寄存器，设定其上限时间（下限固定）。喂狗的时间不能过早也不能过晚。</p>
+<h4 id="窗口看门狗工作过程总结"><a href="#窗口看门狗工作过程总结" class="headerlink" title="窗口看门狗工作过程总结"></a>窗口看门狗工作过程总结</h4><p>STM32F的窗口看门狗中有一个7位的递减计数器T[6:0]，它会在出现下述2种情况之一时产生看门狗复位：<br>当喂狗的时候如果计数器的值大于某一设定数值W[6:0]时，此设定数值在WWDG_CFR寄存器定义。<br>当计数器的数值从0x40减到0x3F时【T6位跳变到0】。<br>如果启动了看门狗并且允许中断，当递减计数器等于0x40时产生早期唤醒中断（EWI），它可以用于喂狗以避免WWDG复位。</p>
+<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200203101005612.png" alt="image-20200203101005612"></p>
+<h4 id="窗口看门狗配置过程"><a href="#窗口看门狗配置过程" class="headerlink" title="窗口看门狗配置过程"></a>窗口看门狗配置过程</h4><p>使能窗口看门狗时钟：HAL_WWDG_MspInit中<br>初始化窗口看门狗：设置分频系数，窗口值，计数值等。HAL_WWDG_Init(); 该函数还可以使能窗口看门狗提前唤醒中断 。<br>设置提前唤醒中断优先级：HAL_WWDG_MspInit<br>编写提前唤醒中断处理函数，喂狗：<br>   HAL_WWDG_EarlyWakeupCallback()；<br>   HAL_WWDG_Refresh();</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/stm32/" rel="tag"># stm32</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/03/2020-2-3-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="prev" title="stm32f4视频学习笔记（六）（源自正点原子）">
+      <i class="fa fa-chevron-left"></i> stm32f4视频学习笔记（六）（源自正点原子）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/03/2020-2-3-freertos%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="next" title="freertos视频学习笔记（一）（源自正点原子）">
+      freertos视频学习笔记（一）（源自正点原子） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#看门狗"><span class="nav-number">1.</span> <span class="nav-text">看门狗</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#两个看门狗的区别"><span class="nav-number">1.1.</span> <span class="nav-text">两个看门狗的区别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IWDG"><span class="nav-number">2.</span> <span class="nav-text">IWDG</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#独立看门狗工作原理描述"><span class="nav-number">2.1.</span> <span class="nav-text">独立看门狗工作原理描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#独立看门狗操作步骤"><span class="nav-number">2.2.</span> <span class="nav-text">独立看门狗操作步骤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WWDG"><span class="nav-number">3.</span> <span class="nav-text">WWDG</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#窗口看门狗工作过程总结"><span class="nav-number">3.1.</span> <span class="nav-text">窗口看门狗工作过程总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#窗口看门狗配置过程"><span class="nav-number">3.2.</span> <span class="nav-text">窗口看门狗配置过程</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">施少峰</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="http://www.shishaofeng.cn/images/wechat.png" title="Wechat → http:&#x2F;&#x2F;www.shishaofeng.cn&#x2F;images&#x2F;wechat.png" rel="noopener" target="_blank"><i class="fa fa-fw fa-weixin"></i>Wechat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/FengShangSS" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;FengShangSS" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019-2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">施少峰</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
