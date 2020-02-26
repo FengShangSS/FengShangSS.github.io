@@ -682,101 +682,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/02/2020-2-2-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="施少峰">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="施少峰的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/02/2020-2-2-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">stm32f4视频学习笔记（二）（源自正点原子）</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-02 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-02T00:00:00+08:00">2020-02-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-26 14:26:37" itemprop="dateModified" datetime="2020-02-26T14:26:37+08:00">2020-02-26</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="固件库和寄存器"><a href="#固件库和寄存器" class="headerlink" title="固件库和寄存器"></a>固件库和寄存器</h3><p>hal库和std库都是固件库，区别于寄存器版本</p>
-<p>固件库就相当于API，将对寄存器的操作封装为函数，节省开发时间</p>
-<p>HAL库优点：便于移植</p>
-<h3 id="GPIO"><a href="#GPIO" class="headerlink" title="GPIO"></a>GPIO</h3><p>全称：general purpose input output 通用输入输出端口</p>
-<p>PA~PH每组16个IO，PI只有12个IO。</p>
-<p>上电复位后，GPIO默认为输入浮空状态，部分特殊引脚为特定状态。如：复位后，调试引脚处于复用功能上拉/下拉状态。</p>
-<p>BSRR寄存器直接写，而ODR寄存器需要先读再写，但BSRR最后还是通过ODR寄存器控制的。</p>
-<p>推挽输出可以输出强高低电平，而开漏输出只能输出强低电平，高电平要靠外部上拉。</p>
-<h4 id="配置HAL库操作IO口步骤："><a href="#配置HAL库操作IO口步骤：" class="headerlink" title="配置HAL库操作IO口步骤："></a>配置HAL库操作IO口步骤：</h4><p>初始化HAL库：HAL_Init();<br>初始化系统时钟 ：Stm32_Clock_Init( );<br>使能IO口时钟：__HAL_RCC_GPIOB_CLK_ENABLE();<br>初始化IO口模式：HAL_GPIO_Init()；<br>操作IO口，输出高低电平：HAL_GPIO_WritePin();</p>
-<p>位带操作直接写内存，正点写的sys文件里的操作。hal库里不怎么用位操作。</p>
-<h3 id="常用C语言知识复习"><a href="#常用C语言知识复习" class="headerlink" title="常用C语言知识复习"></a>常用C语言知识复习</h3><p>1、位操作：&amp; 与；| 或；~ 非；^ 亦或；&lt;&lt; 左移；&gt;&gt; 右移</p>
-<p>2、define宏定义：#define A B</p>
-<p>3、ifdef条件编译：#ifdef #else #endif</p>
-<p>4、typedef类型别名：typedef unsigned char uint8_t</p>
-<p>5、extern：可多次声明，但只定义一次</p>
-<p>6、static：静态存储区，作用域仅限于当前.c文件</p>
-<p>7、__weak弱函数：相当于c++的虚函数。注意点：weak函数和重写函数不能放在同一文件。避免重复定义。</p>
-<p>8、结构体struct；优点是可扩展性强。</p>
-<h3 id="时钟系统"><a href="#时钟系统" class="headerlink" title="时钟系统"></a>时钟系统</h3><p>5个时钟源：HSI、HSE、LSI、LSE、PLL</p>
-<p>LSI主要给看门狗用。LSE外接32.768Khz石英晶体，供RTC用。</p>
-<p>STM32F4时钟信号输出MCO1（PA8）和MCO2(PC9)，MCO最大输出时钟不超过100MHz</p>
-<p>视频24要回顾，涉及到系统最大频率需要调用的几个函数。</p>
-<h3 id="Systick定时器"><a href="#Systick定时器" class="headerlink" title="Systick定时器"></a>Systick定时器</h3><p>系统滴答定时器，一个24位的倒计时定时器，计到0时，从RELOAD寄存器自动重装载定时初值。只要不把它在systick控制及状态寄存器中的使能位清除，就永不停息，即使是在睡眠模式下也能工作。</p>
-<p>systick定时器被捆绑在NVIC中，用于产生SYSTICK异常（异常号：15）</p>
-<p>systick中断的优先级也可以设置。</p>
-<p>systick具体怎么用？</p>
-<h3 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h3><p>CM4/CM7 内核支持256个中断，其中包含了16个内核中断和240个外部中断，并且具有256级的可编程中断设置。<br>STM32F42xx/STM32F43xx则总共有97个中断。10个内核中断，87个可屏蔽中断。 </p>
-<p>STM32具有16级可编程的中断优先级。</p>
-<p>4位可给抢占和响应分配。</p>
-<h4 id="抢占优先级-amp-响应优先级区别："><a href="#抢占优先级-amp-响应优先级区别：" class="headerlink" title="抢占优先级 &amp; 响应优先级区别："></a>抢占优先级 &amp; 响应优先级区别：</h4><p>高优先级的抢占优先级是可以打断正在进行的低抢占优先级中断的。<br>抢占优先级相同的中断，高响应优先级不可以打断低响应优先级的中断。<br>抢占优先级相同的中断，当两个中断同时发生的情况下，哪个响应优先级高，哪个先执行。<br>如果两个中断的抢占优先级和响应优先级都是一样的话，则看哪个中断先发生就先执行；</p>
-<p>值越小，优先级越高。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/02/2020-2-2-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -888,7 +793,7 @@ USARTDIV = f_{PCLKx}/(bps*16)</script><h4 id="串口字节发送流程"><a href=
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/01/2020-2-1-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/01/2020-2-2-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -902,7 +807,7 @@ USARTDIV = f_{PCLKx}/(bps*16)</script><h4 id="串口字节发送流程"><a href=
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/01/2020-2-1-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" class="post-title-link" itemprop="url">stm32f4视频学习笔记（一）（源自正点原子）</a>
+            <a href="/2020/02/01/2020-2-2-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">stm32f4视频学习笔记（二）（源自正点原子）</a>
         </h1>
 
         <div class="post-meta">
@@ -919,7 +824,102 @@ USARTDIV = f_{PCLKx}/(bps*16)</script><h4 id="串口字节发送流程"><a href=
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-26 14:26:26" itemprop="dateModified" datetime="2020-02-26T14:26:26+08:00">2020-02-26</time>
+                <time title="Modified: 2020-02-26 14:39:03" itemprop="dateModified" datetime="2020-02-26T14:39:03+08:00">2020-02-26</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="固件库和寄存器"><a href="#固件库和寄存器" class="headerlink" title="固件库和寄存器"></a>固件库和寄存器</h3><p>hal库和std库都是固件库，区别于寄存器版本</p>
+<p>固件库就相当于API，将对寄存器的操作封装为函数，节省开发时间</p>
+<p>HAL库优点：便于移植</p>
+<h3 id="GPIO"><a href="#GPIO" class="headerlink" title="GPIO"></a>GPIO</h3><p>全称：general purpose input output 通用输入输出端口</p>
+<p>PA~PH每组16个IO，PI只有12个IO。</p>
+<p>上电复位后，GPIO默认为输入浮空状态，部分特殊引脚为特定状态。如：复位后，调试引脚处于复用功能上拉/下拉状态。</p>
+<p>BSRR寄存器直接写，而ODR寄存器需要先读再写，但BSRR最后还是通过ODR寄存器控制的。</p>
+<p>推挽输出可以输出强高低电平，而开漏输出只能输出强低电平，高电平要靠外部上拉。</p>
+<h4 id="配置HAL库操作IO口步骤："><a href="#配置HAL库操作IO口步骤：" class="headerlink" title="配置HAL库操作IO口步骤："></a>配置HAL库操作IO口步骤：</h4><p>初始化HAL库：HAL_Init();<br>初始化系统时钟 ：Stm32_Clock_Init( );<br>使能IO口时钟：__HAL_RCC_GPIOB_CLK_ENABLE();<br>初始化IO口模式：HAL_GPIO_Init()；<br>操作IO口，输出高低电平：HAL_GPIO_WritePin();</p>
+<p>位带操作直接写内存，正点写的sys文件里的操作。hal库里不怎么用位操作。</p>
+<h3 id="常用C语言知识复习"><a href="#常用C语言知识复习" class="headerlink" title="常用C语言知识复习"></a>常用C语言知识复习</h3><p>1、位操作：&amp; 与；| 或；~ 非；^ 亦或；&lt;&lt; 左移；&gt;&gt; 右移</p>
+<p>2、define宏定义：#define A B</p>
+<p>3、ifdef条件编译：#ifdef #else #endif</p>
+<p>4、typedef类型别名：typedef unsigned char uint8_t</p>
+<p>5、extern：可多次声明，但只定义一次</p>
+<p>6、static：静态存储区，作用域仅限于当前.c文件</p>
+<p>7、__weak弱函数：相当于c++的虚函数。注意点：weak函数和重写函数不能放在同一文件。避免重复定义。</p>
+<p>8、结构体struct；优点是可扩展性强。</p>
+<h3 id="时钟系统"><a href="#时钟系统" class="headerlink" title="时钟系统"></a>时钟系统</h3><p>5个时钟源：HSI、HSE、LSI、LSE、PLL</p>
+<p>LSI主要给看门狗用。LSE外接32.768Khz石英晶体，供RTC用。</p>
+<p>STM32F4时钟信号输出MCO1（PA8）和MCO2(PC9)，MCO最大输出时钟不超过100MHz</p>
+<p>视频24要回顾，涉及到系统最大频率需要调用的几个函数。</p>
+<h3 id="Systick定时器"><a href="#Systick定时器" class="headerlink" title="Systick定时器"></a>Systick定时器</h3><p>系统滴答定时器，一个24位的倒计时定时器，计到0时，从RELOAD寄存器自动重装载定时初值。只要不把它在systick控制及状态寄存器中的使能位清除，就永不停息，即使是在睡眠模式下也能工作。</p>
+<p>systick定时器被捆绑在NVIC中，用于产生SYSTICK异常（异常号：15）</p>
+<p>systick中断的优先级也可以设置。</p>
+<p>systick具体怎么用？</p>
+<h3 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h3><p>CM4/CM7 内核支持256个中断，其中包含了16个内核中断和240个外部中断，并且具有256级的可编程中断设置。<br>STM32F42xx/STM32F43xx则总共有97个中断。10个内核中断，87个可屏蔽中断。 </p>
+<p>STM32具有16级可编程的中断优先级。</p>
+<p>4位可给抢占和响应分配。</p>
+<h4 id="抢占优先级-amp-响应优先级区别："><a href="#抢占优先级-amp-响应优先级区别：" class="headerlink" title="抢占优先级 &amp; 响应优先级区别："></a>抢占优先级 &amp; 响应优先级区别：</h4><p>高优先级的抢占优先级是可以打断正在进行的低抢占优先级中断的。<br>抢占优先级相同的中断，高响应优先级不可以打断低响应优先级的中断。<br>抢占优先级相同的中断，当两个中断同时发生的情况下，哪个响应优先级高，哪个先执行。<br>如果两个中断的抢占优先级和响应优先级都是一样的话，则看哪个中断先发生就先执行；</p>
+<p>值越小，优先级越高。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/31/2020-2-1-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="施少峰">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="施少峰的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/31/2020-2-1-stm32f4%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" class="post-title-link" itemprop="url">stm32f4视频学习笔记（一）（源自正点原子）</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-01-31 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-31T00:00:00+08:00">2020-01-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-26 14:38:56" itemprop="dateModified" datetime="2020-02-26T14:38:56+08:00">2020-02-26</time>
               </span>
 
           
